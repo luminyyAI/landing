@@ -167,6 +167,11 @@
     transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
+/* Injected by initNavbarMorph; only visible inside the floating pill. */
+.nav__dock-brand {
+  display: none;
+}
+
 /* Morphed state — desktop only; mobile keeps the classic solid bar. */
 @media (min-width: 900px) {
   .nav.nav--floating {
@@ -182,23 +187,51 @@
     transform: translateY(-10px) scale(0.92);
   }
 
-  /* Center dock: core navigation links in a floating capsule. */
+  /* Left dock: dark floating pill — logo chip on the left, links beside it. */
   .nav--floating .nav__center-slot > nav {
     position: fixed;
     top: 0.85rem;
-    left: 50%;
-    transform: translateX(-50%);
+    left: clamp(0.75rem, 2.5vw, 1.5rem);
+    display: flex;
+    align-items: center;
+    gap: 1.15rem;
     width: auto;
     max-width: min(92vw, 760px);
-    padding: 0.5rem 1.35rem;
+    padding: 0.45rem 1.5rem 0.45rem 0.45rem;
     pointer-events: auto;
-    background: rgba(251, 251, 253, 0.86);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 999px;
-    box-shadow: 0 10px 34px rgba(0, 0, 0, 0.12);
-    backdrop-filter: blur(16px) saturate(165%);
-    -webkit-backdrop-filter: blur(16px) saturate(165%);
+    background: rgba(13, 17, 33, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.15rem;
+    box-shadow: 0 18px 44px rgba(6, 10, 24, 0.35);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
     animation: nav-dock-in-center 0.34s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  .nav--floating .nav__dock-brand {
+    display: block;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 0.65rem;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  /* The mark's own blue field is the chip background. */
+  .nav--floating .nav__dock-brand img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .nav--floating .nav__center-slot .nav__link {
+    color: #fff;
+  }
+
+  .nav--floating .nav__center-slot .nav__link:hover,
+  .nav--floating .nav__center-slot .nav__link:focus-visible {
+    color: rgba(255, 255, 255, 0.68);
   }
 
   /* Right dock: auth / CTA capsule pinned to the viewport edge. */
@@ -206,27 +239,36 @@
     position: fixed;
     top: 0.85rem;
     right: clamp(0.75rem, 2.5vw, 1.5rem);
-    padding: 0.4rem 0.45rem 0.4rem 1rem;
+    padding: 0.45rem 0.5rem 0.45rem 1.1rem;
     pointer-events: auto;
-    background: rgba(251, 251, 253, 0.86);
-    border: 1px solid rgba(0, 0, 0, 0.08);
-    border-radius: 999px;
-    box-shadow: 0 10px 34px rgba(0, 0, 0, 0.12);
-    backdrop-filter: blur(16px) saturate(165%);
-    -webkit-backdrop-filter: blur(16px) saturate(165%);
+    background: rgba(13, 17, 33, 0.82);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 1.15rem;
+    box-shadow: 0 18px 44px rgba(6, 10, 24, 0.35);
+    backdrop-filter: blur(18px) saturate(140%);
+    -webkit-backdrop-filter: blur(18px) saturate(140%);
     animation: nav-dock-in-right 0.34s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  .nav--floating .nav__actions .nav__link--auth {
+    color: #fff;
+  }
+
+  .nav--floating .nav__actions .nav__link--auth:hover,
+  .nav--floating .nav__actions .nav__link--auth:focus-visible {
+    color: rgba(255, 255, 255, 0.68);
   }
 }
 
 @keyframes nav-dock-in-center {
   from {
     opacity: 0;
-    transform: translateX(-50%) translateY(-14px);
+    transform: translateY(-14px);
   }
 
   to {
     opacity: 1;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
 }
 
@@ -637,15 +679,16 @@
   font-size: 0.88rem;
   font-weight: 500;
   color: #fff;
+  /* Colorway anchored to the logo mark's blue field (#6198fc). */
   background: linear-gradient(
     105deg,
-    #005bb5 0%,
-    #0071e3 18%,
-    #5b8def 36%,
-    #9b8fd9 52%,
-    #0077ed 70%,
-    #0066cc 88%,
-    #005bb5 100%
+    #3f74ea 0%,
+    #5285f4 18%,
+    #6198fc 36%,
+    #8ab3ff 52%,
+    #6198fc 70%,
+    #4d80f1 88%,
+    #3f74ea 100%
   );
   background-size: 300% 100%;
   background-position: 0% 50%;
@@ -664,7 +707,7 @@
 .nav__cta:hover {
   filter: brightness(1.08) saturate(1.06);
   transform: scale(1.02);
-  box-shadow: 0 4px 16px rgba(0, 113, 227, 0.35);
+  box-shadow: 0 4px 16px rgba(97, 152, 252, 0.45);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -720,8 +763,10 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  min-height: min(720px, calc(100vh - 6.75rem));
-  min-height: min(720px, calc(100dvh - 6.75rem));
+  /* Fill the first screen exactly: viewport minus the measured navbar,
+     plus the 0.85rem the hero already tucks under it via margin-top. */
+  min-height: calc(100vh - var(--nav-h, 5.4rem) + 0.85rem);
+  min-height: calc(100dvh - var(--nav-h, 5.4rem) + 0.85rem);
 }
 
 /* Full-bleed wash — extends slightly past hero bottom to remove subpixel seam (does not affect layout flow) */
@@ -2966,6 +3011,8 @@
   line-height: 0;
   border-radius: var(--radius-sm);
   transition: opacity 0.2s ease;
+  /* Pull the logo + wordmark left of the brand column's edge. */
+  margin-left: -14px;
 }
 
 .footer__logo-link:hover {

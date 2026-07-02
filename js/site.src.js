@@ -103,6 +103,25 @@ function initScrollAmbient() {
   requestAnimationFrame(apply);
 }
 
+/* -------------------------------------------------- navbar height var */
+
+/**
+ * Publishes the navbar's rendered height as `--nav-h` on the document root
+ * so the hero can size itself to exactly fill the first screen.
+ */
+function initNavHeightVar() {
+  const header = document.querySelector('header.nav');
+  if (!header) return;
+
+  const apply = () => {
+    document.documentElement.style.setProperty('--nav-h', `${header.offsetHeight}px`);
+  };
+
+  apply();
+  window.addEventListener('resize', apply, { passive: true });
+  window.addEventListener('load', apply);
+}
+
 /* -------------------------------------------------- navbar appearance */
 
 /**
@@ -147,6 +166,21 @@ function initNavbarAppearance() {
 function initNavbarMorph() {
   const header = document.querySelector('header.nav');
   if (!header) return;
+
+  // The floating pill shows the logo inside it; injected here so the 11
+  // static pages don't each need the extra markup.
+  const dockNav = header.querySelector('.nav__center-slot > nav');
+  if (dockNav && !dockNav.querySelector('.nav__dock-brand')) {
+    const brand = document.createElement('a');
+    brand.className = 'nav__dock-brand';
+    brand.href = 'index.html#top';
+    brand.setAttribute('aria-label', 'Luminy home');
+    const img = document.createElement('img');
+    img.src = 'images/luminy-mark-blue.png';
+    img.alt = '';
+    brand.appendChild(img);
+    dockNav.prepend(brand);
+  }
 
   const sentinel = document.createElement('div');
   sentinel.className = 'nav__scroll-sentinel';
@@ -283,6 +317,7 @@ function initPricingToggle() {
 
 function boot() {
   initScrollAmbient();
+  initNavHeightVar();
   initNavbarAppearance();
   initNavbarMorph();
   initNavbarMega();
