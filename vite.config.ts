@@ -1,6 +1,8 @@
 import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 export default defineConfig({
+  plugins: [react()],
   root: '.',
   publicDir: 'public',
   build: {
@@ -14,6 +16,7 @@ export default defineConfig({
         suggestions: './suggestions.html',
         pricing: './pricing.html',
         faq: './faq.html',
+        tracking: './tracking.html',
         blog: './blog.html',
         blogReleasingSoon: './blog-releasing-soon.html',
       },

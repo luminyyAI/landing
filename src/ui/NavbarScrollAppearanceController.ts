@@ -1,28 +1,29 @@
 /**
- * Toggles `nav--scrolled` so the navbar shows a hairline + blur only after the user
- * has scrolled far enough that the Features block (“What does Luminy include?”) enters
- * the viewport — past the full hero. Pages without `#features` fall back to a small scroll offset.
+ * Toggles `nav--scrolled` (hairline + frosted background) only after the hero
+ * dashboard mock (`#hero-mock`) scrolls up far enough to meet the navbar — i.e.
+ * when the nav links would visually intersect the top of that image.
+ * Other pages fall back to a small scroll offset.
  */
 export class NavbarScrollAppearanceController {
   private readonly header: HTMLElement;
 
   private readonly scrolledClass = 'nav--scrolled';
 
-  private readonly sentinelSelector: string;
+  private readonly heroMockSelector: string;
 
   private scheduledFrame = 0;
 
   public constructor(
     headerSelector = 'header.nav',
-    /** Includes section — see `FeaturesSection` (`id="features"`). */
-    sentinelSelector = '#features',
+    /** Hero UI mock — see `Hero.ts` (`id="hero-mock"`). */
+    heroMockSelector = '#hero-mock',
   ) {
     const el = document.querySelector(headerSelector);
     if (!el) {
       throw new Error(`Navbar not found: ${headerSelector}`);
     }
     this.header = el as HTMLElement;
-    this.sentinelSelector = sentinelSelector;
+    this.heroMockSelector = heroMockSelector;
   }
 
   public start(): void {
@@ -58,20 +59,17 @@ export class NavbarScrollAppearanceController {
   };
 
   private sync(): void {
-    const sentinel = document.querySelector<HTMLElement>(this.sentinelSelector);
-    if (!sentinel) {
+    const mock = document.querySelector<HTMLElement>(this.heroMockSelector);
+    if (!mock) {
       this.header.classList.toggle(this.scrolledClass, window.scrollY > 8);
       return;
     }
 
-    const rect = sentinel.getBoundingClientRect();
-    const vh = window.innerHeight;
-    /**
-     * No bottom treatment until the top of #features rises into view (e.g. headline
-     * peeking above the bottom of the window), matching the hero → includes transition.
-     */
-    const featuresEnteringViewport = rect.top < vh * 0.92;
+    const navRect = this.header.getBoundingClientRect();
+    const mockRect = mock.getBoundingClientRect();
+    /** Top of mock has entered the navbar band (same vertical region as the link row). */
+    const mockCollidesNav = mockRect.top <= navRect.bottom + 1;
 
-    this.header.classList.toggle(this.scrolledClass, featuresEnteringViewport);
+    this.header.classList.toggle(this.scrolledClass, mockCollidesNav);
   }
 }

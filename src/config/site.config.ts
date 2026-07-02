@@ -1,4 +1,15 @@
-import logoUrl from '../../images/luminy.png';
+import logoUrl from '../../images/luminy-removebg.png';
+
+/** One column inside the Features hover mega menu. */
+export interface SiteNavMegaColumn {
+  readonly title: string;
+  readonly description: string;
+  /** When set with no `items`, the column is a single link (e.g. Tracking → feature page). */
+  readonly href?: string;
+  /** Non-clickable column; shows a “Coming soon” badge (e.g. Discovery). */
+  readonly comingSoon?: boolean;
+  readonly items: readonly string[];
+}
 
 export interface SiteNavItem {
   readonly id: string;
@@ -6,6 +17,10 @@ export interface SiteNavItem {
   readonly href: string;
   /** Copies support email + shows toast instead of navigating. */
   readonly copySupportEmail?: boolean;
+  /** Desktop hover mega menu (e.g. Features). Hidden on small screens; link still works. */
+  readonly megaMenu?: {
+    readonly columns: readonly SiteNavMegaColumn[];
+  };
 }
 
 export interface SiteNavAuth {
@@ -44,10 +59,57 @@ export const siteConfig: SiteConfig = {
   homeHref: 'index.html#top',
   navItems: [
     { id: 'home', label: 'Home', href: 'index.html#top' },
-    { id: 'features', label: 'Features', href: 'index.html#features' },
-    { id: 'use-cases', label: 'Use Cases', href: 'index.html#why-choose-luminy' },
+    {
+      id: 'features',
+      label: 'Features',
+      href: 'index.html#features',
+      megaMenu: {
+        columns: [
+          {
+            title: 'Tracking',
+            description: 'Sync all accounts and transactions in one place.',
+            href: 'tracking.html',
+            items: [
+              'Bank Accounts',
+              'Credit Cards',
+              'Loans',
+              'Investment Brokerages',
+              'Real Estate',
+              'Savings',
+            ],
+          },
+          {
+            title: 'Analytics',
+            description: 'Advanced predictive financial analytics.',
+            href: 'index.html#features',
+            items: [
+              'Spending Analytics',
+              'Cash Flow',
+              'Forecasting',
+              'Risk Metrics',
+              'Portfolio Insights',
+              'AI Insights',
+            ],
+          },
+          {
+            title: 'AI Intelligence',
+            description: 'AI-powered financial insights in real time.',
+            href: 'index.html#features',
+            items: ['Financial Q&A', 'Recommendations', 'Summaries', 'Subscription Intelligence'],
+          },
+          {
+            title: 'Discovery',
+            description:
+              "We've collaborated with multi-state realtors and financial professionals to provide monthly financial tips proven to amplify your financial growth.",
+            comingSoon: true,
+            items: [],
+          },
+        ],
+      },
+    },
+    { id: 'support', label: 'Support', href: 'faq.html' },
     { id: 'pricing', label: 'Pricing', href: 'pricing.html' },
-    { id: 'support', label: 'Support', href: '#', copySupportEmail: true },
+    { id: 'download', label: 'Download', href: 'index.html#download' },
   ],
   navAuth: {
     login: { id: 'login', label: 'Login', href: '#' },
@@ -58,7 +120,6 @@ export const siteConfig: SiteConfig = {
       heading: 'Product',
       links: [
         { label: 'Pricing', href: 'pricing.html' },
-        { label: 'Features', href: 'index.html#features' },
         { label: 'Demo', href: '#' },
         { label: 'Download for iOS', href: '#' },
         { label: 'Download for Mac', href: '#' },
@@ -68,6 +129,7 @@ export const siteConfig: SiteConfig = {
       heading: 'About',
       links: [
         { label: 'About us', href: '#' },
+        { label: 'Features', href: 'index.html#features' },
         { label: 'Blog', href: 'blog.html' },
         { label: 'Suggestions', href: '#', copySupportEmail: true },
       ],
