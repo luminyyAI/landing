@@ -1,0 +1,1 @@
+our navbar animation once we scroll done is a copycat of copilot finaces but ours isnt there yet so fix it to be like theres

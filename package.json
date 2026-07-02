@@ -1,23 +1,13 @@
 {
   "name": "luminy-landing",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc --noEmit && vite build",
-    "preview": "vite preview"
+    "dev": "python3 -m http.server 5173 --bind 127.0.0.1",
+    "minify": "esbuild js/site.src.js --bundle --minify --format=iife --outfile=js/site.min.js && esbuild styles/main.css --bundle --minify --outfile=styles/main.min.css"
   },
   "devDependencies": {
-    "@types/react": "^18.3.29",
-    "@types/react-dom": "^18.3.7",
-    "@vitejs/plugin-react": "^4.7.0",
-    "typescript": "~5.8.3",
-    "vite": "^6.3.5"
-  },
-  "dependencies": {
-    "embla-carousel": "^8.6.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "esbuild": "^0.25.0"
   }
 }

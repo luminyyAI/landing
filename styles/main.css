@@ -278,7 +278,8 @@
   gap: 0.32rem;
   margin-right: 0.5rem;
   font-weight: 600;
-  font-size: 1.25rem;
+  /* Wordmark visually matches the logo's ~40px visible mark. */
+  font-size: 2.4rem;
   letter-spacing: -0.028em;
   line-height: 0;
 }
@@ -288,8 +289,8 @@
 }
 
 .nav__logo {
-  width: 96px;
-  height: 96px;
+  width: 84px;
+  height: 84px;
   object-fit: contain;
   flex-shrink: 0;
   display: block;
@@ -857,7 +858,7 @@
 }
 
 .hero-award__title {
-  max-width: 15ch;
+  max-width: 17ch;
   white-space: normal;
   text-align: center;
   font-size: 0.88rem;
@@ -907,59 +908,32 @@
   }
 }
 
-.hero__eyebrow {
-  margin: 0 0 1rem;
-  font-family: var(--font-sans);
-  font-size: 0.875rem;
+/* Ticket "itmaybereversed": "Meet Luminy" H1 + subheadline (original copy). */
+.hero__headline {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-display);
   font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
+  font-size: clamp(2.3rem, 7cqw, 3.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.035em;
+  color: var(--color-text);
 }
 
-.hero__headline {
+.hero__subheadline {
   display: flex;
   flex-direction: column;
-  gap: 0.35rem;
-  margin: 0 0 1.25rem;
+  gap: 0.25rem;
+  margin: 0 0 1.1rem;
   font-family: var(--font-display);
-  letter-spacing: -0.035em;
-}
-
-.hero__headline-line {
-  display: block;
-  font-weight: 600;
-  font-size: clamp(1.65rem, 7.5vw, 2.5rem);
-  line-height: 1.08;
-  color: var(--color-text);
-  white-space: nowrap;
-}
-
-.hero__headline-line--secondary {
   font-weight: 500;
-  font-size: clamp(1.45rem, 6.5vw, 2.15rem);
+  font-size: clamp(1.25rem, 3.4cqw, 1.7rem);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
   color: var(--color-text);
-  white-space: nowrap;
 }
 
-@container (min-width: 380px) {
-  .hero__headline-line {
-    font-size: clamp(1.85rem, 9cqw, 2.85rem);
-  }
-
-  .hero__headline-line--secondary {
-    font-size: clamp(1.65rem, 7.8cqw, 2.35rem);
-  }
-}
-
-@container (min-width: 520px) {
-  .hero__headline-line {
-    font-size: clamp(2.1rem, 9.5cqw, 3.15rem);
-  }
-
-  .hero__headline-line--secondary {
-    font-size: clamp(1.85rem, 8.2cqw, 2.55rem);
-  }
+.hero__subheadline-line {
+  display: block;
 }
 
 .hero__desc {
@@ -1575,6 +1549,39 @@
   flex-direction: column;
   align-items: center;
   gap: var(--space-md);
+}
+
+/* Desktop: the phone matches the cards column height while keeping
+   natural iPhone proportions — its width derives from that height. */
+@media (min-width: 900px) {
+  .includes__layout {
+    align-items: stretch;
+  }
+
+  .includes__phone-col {
+    display: flex;
+    max-width: none;
+  }
+
+  .includes__phone-wrap {
+    width: 100%;
+    height: 100%;
+  }
+
+  .includes__device {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width: auto;
+    max-width: none;
+    aspect-ratio: 9 / 18.2;
+  }
+
+  .includes__screen {
+    flex: 1;
+    aspect-ratio: auto;
+  }
 }
 
 .includes__device {
@@ -2579,6 +2586,24 @@
   font-size: clamp(2.6rem, 5.6vw, 3.4rem);
 }
 
+/* The "i" in Luminy: dotless stem with the logo standing in for the tittle. */
+.why-choose-luminy__logo-i {
+  position: relative;
+  display: inline-block;
+}
+
+.why-choose-luminy__logo-i img {
+  /* The PNG mark only fills ~55% of its canvas, so the box is oversized
+     to leave the visible logo at tittle size (~0.14em). */
+  position: absolute;
+  left: 50%;
+  top: -0.06em;
+  width: 0.34em;
+  height: 0.34em;
+  transform: translateX(-50%);
+  object-fit: contain;
+}
+
 .why-choose-luminy .container {
   width: 100%;
   max-width: var(--max-width);
@@ -2869,24 +2894,25 @@
   }
 }
 
-/* Footer */
+/* Footer — compact utility footer (Cal AI-style layout) */
 .footer {
   margin-top: auto;
-  padding-block: clamp(3.5rem, 6vw, 5rem) var(--space-lg);
+  padding-block: clamp(2.5rem, 4vw, 3.5rem) 1.75rem;
   border-top: 1px solid var(--color-border);
-  background: #fafafa;
+  background: #f4f7fa;
 }
 
-/* Footer spans nearly the full page width (Cal AI-style), unlike inner sections. */
 .footer .container {
-  max-width: none;
-  padding-inline: clamp(1.5rem, 4.5vw, 4.5rem);
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 2.5rem);
 }
 
 .footer__grid {
   display: grid;
-  gap: var(--space-md) var(--space-lg);
+  gap: var(--space-lg) var(--space-md);
   grid-template-columns: 1fr;
+  align-items: start;
 }
 
 @media (min-width: 720px) {
@@ -2901,9 +2927,9 @@
 
 @media (min-width: 900px) {
   .footer__grid {
-    grid-template-columns: minmax(320px, 1.6fr) repeat(4, minmax(0, 1fr));
-    gap: var(--space-md) var(--space-lg);
-    align-items: start;
+    /* Brand takes the slack; link columns hug the right, evenly spaced. */
+    grid-template-columns: 1fr repeat(4, max-content);
+    gap: var(--space-md) clamp(2rem, 4.5vw, 4rem);
   }
 
   .footer__brand {
@@ -2915,7 +2941,21 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: var(--space-md);
+  gap: 0.9rem;
+}
+
+/* Desktop: brand block spans the link columns' full height — logo top,
+   "Download Luminy" centered between, badges aligned with the last link row. */
+@media (min-width: 900px) {
+  .footer__brand {
+    align-self: stretch;
+    justify-content: space-between;
+    gap: var(--space-sm);
+  }
+
+  .footer__download-label {
+    margin-block: auto;
+  }
 }
 
 
@@ -2938,15 +2978,21 @@
 }
 
 .footer__logo {
-  width: 56px;
-  height: 56px;
+  /* Same rendered size as .nav__logo in the navbar. */
+  width: 84px;
+  height: 84px;
   object-fit: contain;
   display: block;
+  /* The PNG has ~25% transparent padding on all sides; negative margins
+     collapse it so the visible mark aligns with the "Download Luminy"
+     label and badges below, without inflating the footer's height. */
+  margin: -21px 0 -22px -21px;
 }
 
 .footer__brand-name {
   font-family: var(--font-display, inherit);
-  font-size: 1.85rem;
+  /* Wordmark visually matches the logo's ~40px visible mark. */
+  font-size: 2.4rem;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.01em;
@@ -2955,7 +3001,7 @@
 
 .footer__download-label {
   margin: 0;
-  font-size: 0.92rem;
+  font-size: 0.9rem;
   font-weight: 500;
   color: var(--color-text-muted);
 }
@@ -2990,7 +3036,7 @@
 }
 
 .footer__badge img {
-  height: 40px;
+  height: 34px;
   width: auto;
   display: block;
 }
@@ -3000,8 +3046,8 @@
 }
 
 .footer__heading {
-  margin: 0 0 var(--space-sm);
-  font-size: 1.05rem;
+  margin: 0 0 0.85rem;
+  font-size: 0.95rem;
   font-weight: 700;
   letter-spacing: -0.01em;
   color: var(--color-text);
@@ -3013,11 +3059,11 @@
   list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 0.85rem;
+  gap: 0.65rem;
 }
 
 .footer__link {
-  font-size: 0.98rem;
+  font-size: 0.9rem;
   color: var(--color-text-muted);
   transition: color 0.2s ease;
 }
@@ -3027,21 +3073,21 @@
 }
 
 .footer__bottom {
-  margin-top: var(--space-lg);
-  padding-top: var(--space-sm);
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+  padding-top: 1.1rem;
   padding-bottom: 0;
   border-top: 1px solid var(--color-border);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 0.35rem 0.75rem;
+  gap: 0.5rem 0.75rem;
 }
 
 .footer__copyright {
   margin: 0;
   padding: 0;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   line-height: 1.3;
   color: var(--color-text-muted);
 }
