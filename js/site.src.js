@@ -8,6 +8,12 @@ import EmblaCarousel from './vendor/embla-carousel.esm.js';
 
 const SUPPORT_EMAIL = 'support@luminyy.com';
 
+/* Luminy app (luminyy-frontend). Point APP_BASE_URL at the deployed app;
+   127.0.0.1:8765 is the frontend's local dev server. */
+const APP_BASE_URL = 'http://127.0.0.1:8765';
+const SIGNUP_URL = `${APP_BASE_URL}/onboarding/onboarding.html`;
+const LOGIN_URL = `${APP_BASE_URL}/dashboard/dashboard.html`;
+
 /* ---------------------------------------------------------------- toast */
 
 const TOAST_MS = 2800;
@@ -313,9 +319,20 @@ function initPricingToggle() {
   opts[1].addEventListener('click', () => apply(true));
 }
 
+/* ------------------------------------------------------------ auth links */
+
+/** Point the navbar Login / Sign up links at the app. */
+function initAuthLinks() {
+  const login = document.getElementById('login');
+  const signup = document.getElementById('signup');
+  if (login) login.href = LOGIN_URL;
+  if (signup) signup.href = SIGNUP_URL;
+}
+
 /* ----------------------------------------------------------------- boot */
 
 function boot() {
+  initAuthLinks();
   initScrollAmbient();
   initNavHeightVar();
   initNavbarAppearance();
