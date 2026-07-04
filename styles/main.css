@@ -2494,6 +2494,9 @@
 .pricing-anchor {
   position: relative;
   box-sizing: border-box;
+  /* .pricing-dark handles vertical rhythm; the generic .section padding
+     would push the cards below the fold. */
+  padding-block: 0;
   /* Sticky nav sits above; subtract it so centered content truly fits one screen */
   min-height: min(calc(100vh - var(--nav-h, 72px)), 900px);
   min-height: min(calc(100dvh - var(--nav-h, 72px)), 900px);
@@ -2585,52 +2588,6 @@
   .pricing-dark__grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.1rem;
-  }
-}
-
-/* Laptop-height screens: tighten the cards so the whole plan row
-   (title + three cards) fits in one viewport without scrolling. */
-@media (min-width: 992px) and (max-height: 960px) {
-  .pricing-dark {
-    padding-block: 1.5rem;
-  }
-
-  .pricing-dark__intro {
-    margin-bottom: 1.25rem;
-  }
-
-  .pricing-dark__title {
-    font-size: clamp(1.75rem, 3.5vw, 2.25rem);
-    margin-bottom: 0.6rem;
-  }
-
-  .pricing-dark__strapline {
-    font-size: clamp(1.05rem, 2vw, 1.25rem);
-    margin-bottom: 0;
-  }
-
-  .pricing-card {
-    padding: 1.3rem 1.25rem 1.15rem;
-  }
-
-  .pricing-card__tagline {
-    margin-bottom: 0.8rem;
-  }
-
-  .pricing-card__bill-note {
-    margin-bottom: 0.9rem;
-  }
-
-  .pricing-card__list {
-    margin-bottom: 1rem;
-  }
-
-  .pricing-card__li {
-    margin-bottom: 0.65rem;
-  }
-
-  .pricing-card__actions {
-    margin-bottom: 0;
   }
 }
 
@@ -2932,6 +2889,75 @@
 .pricing-card__cta--plus:focus-visible {
   outline: 2px solid rgba(125, 211, 252, 0.85);
   outline-offset: 3px;
+}
+
+/* Laptop-height screens: tighten the intro and cards so the whole plan row
+   (title + three cards) fits in one viewport without scrolling.
+   Must stay AFTER the base pricing-card rules — same specificity. */
+@media (min-width: 992px) and (max-height: 960px) {
+  .pricing-dark {
+    padding-block: 1.25rem;
+  }
+
+  .pricing-dark__intro {
+    margin-bottom: 1rem;
+  }
+
+  .pricing-dark__title {
+    font-size: clamp(1.65rem, 3vw, 2rem);
+    margin-bottom: 0.5rem;
+  }
+
+  .pricing-dark__strapline {
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    margin-bottom: 0;
+  }
+
+  .pricing-card {
+    padding: 1.1rem 1.25rem 1rem;
+  }
+
+  .pricing-card__name {
+    font-size: 1.2rem;
+  }
+
+  .pricing-card__tagline {
+    margin-bottom: 0.6rem;
+  }
+
+  .pricing-card__price {
+    font-size: 1.85rem;
+  }
+
+  .pricing-card__bill-note {
+    margin-bottom: 0.7rem;
+  }
+
+  .pricing-card__list {
+    margin-bottom: 0.75rem;
+  }
+
+  .pricing-card__li {
+    margin-bottom: 0.5rem;
+  }
+
+  .pricing-card__li-detail {
+    font-size: 0.78rem;
+    line-height: 1.35;
+  }
+
+  .pricing-card__cta {
+    padding-block: 0.55rem;
+  }
+
+  .pricing-card__actions {
+    margin-bottom: 0;
+    gap: 0.4rem;
+  }
+
+  .pricing-card__platform {
+    padding-block: 0.45rem;
+  }
 }
 
 /* Value props — continues hue from features; soft green/lilac drift with scroll */
@@ -3621,9 +3647,9 @@
 
 @media (min-width: 900px) {
   .footer__bottom::before {
-    /* Match .footer__brand's left pull and .footer__column:last-child's
-       right nudge so the line spans the full footer content width. */
-    left: clamp(-2.5rem, -3vw, -1.25rem);
+    /* Match the top divider: brand pull plus the logo-link's -14px, so
+       both lines start where the visible logo mark starts. */
+    left: calc(clamp(-2.5rem, -3vw, -1.25rem) - 14px);
     right: clamp(-1.25rem, -1.5vw, -0.5rem);
   }
 
