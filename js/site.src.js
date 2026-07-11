@@ -1,5 +1,5 @@
 /**
- * Luminy marketing site — vanilla JS.
+ * Luminy marketing site - vanilla JS.
  * Source of truth for all page interactivity; bundled+minified to js/site.min.js
  * (npx esbuild js/site.src.js --bundle --minify --format=iife --outfile=js/site.min.js).
  * Each init is feature-gated on the DOM it needs, so one bundle serves every page.
@@ -8,9 +8,10 @@ import EmblaCarousel from './vendor/embla-carousel.esm.js';
 
 const SUPPORT_EMAIL = 'support@luminyy.com';
 
-/* Luminy app (luminyy-frontend). Point APP_BASE_URL at the deployed app;
-   127.0.0.1:8765 is the frontend's local dev server. */
-const APP_BASE_URL = 'http://127.0.0.1:8765';
+/* Luminy app (luminyy-frontend). Auto-switches: local dev server while the
+   landing site itself is served locally, deployed app otherwise. */
+const IS_LOCAL = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const APP_BASE_URL = IS_LOCAL ? 'http://127.0.0.1:8765' : 'https://app.luminyy.com';
 const SIGNUP_URL = `${APP_BASE_URL}/onboarding/onboarding.html`;
 const LOGIN_URL = `${APP_BASE_URL}/dashboard/dashboard.html`;
 
@@ -63,13 +64,139 @@ function initSupportEmailCopy() {
     event.preventDefault();
     void copySupportEmailAndToast();
   });
+}
 
-  // Suggestions page copies the address on arrival.
-  if (document.querySelector('.suggestions-page')) {
-    queueMicrotask(() => {
-      void copySupportEmailAndToast();
-    });
+/* ------------------------------------------------------ form validation */
+
+/* Strict email shape: one local part (letters, digits, . _ % + -), exactly
+   one "@", dot-separated domain labels that don't start/end with a hyphen,
+   and a letters-only top-level domain of 2+ characters (.com, .io, …).
+   Deliberately stricter than the browser's built-in type="email" check,
+   which accepts addresses like "a@b". */
+const STRICT_EMAIL_PATTERN =
+  /^[A-Za-z0-9._%+-]+@[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*\.[A-Za-z]{2,}$/;
+
+const EMAIL_MAX_LENGTH = 254;
+
+/** Returns '' when the email is valid, otherwise a user-facing error. */
+function validateEmailStrict(value) {
+  const email = value.trim();
+  if (!email) return 'Please enter your email address.';
+  if (!email.includes('@')) return 'Email must include an "@".';
+  if (email.split('@').length !== 2) return 'Email must contain exactly one "@".';
+  if (email.length > EMAIL_MAX_LENGTH) return 'Email address is too long.';
+
+  const [local, domain] = email.split('@');
+  if (local.startsWith('.') || local.endsWith('.') || local.includes('..')) {
+    return 'The part before "@" can\'t start, end, or repeat with dots.';
   }
+  if (!domain.includes('.')) {
+    return 'The domain needs a dot, like "example.com".';
+  }
+  if (!STRICT_EMAIL_PATTERN.test(email)) {
+    return 'Enter a valid email like you@example.com - the ending after the last "." must be at least 2 letters.';
+  }
+  return '';
+}
+
+/* ---------------------------------------------------- suggestions form */
+
+/* Where suggestion messages are POSTed as JSON ({ email, message }).
+   Leave empty to fall back to a pre-filled mailto: draft (no backend
+   needed). NOTE: the localStorage limit below only deters casual repeat
+   submissions from the same browser - anyone can clear storage or hit the
+   endpoint directly, so the real quota must live server-side (form
+   provider limits, Turnstile/captcha, or per-IP rate limiting). */
+const SUGGESTIONS_ENDPOINT = '';
+const SUGGESTIONS_MAX_PER_DAY = 2;
+const SUGGESTIONS_MIN_INTERVAL_MS = 60 * 1000;
+const SUGGESTIONS_STORE_KEY = 'luminy-suggestion-times';
+
+function recentSuggestionTimes() {
+  try {
+    const raw = JSON.parse(localStorage.getItem(SUGGESTIONS_STORE_KEY));
+    if (!Array.isArray(raw)) return [];
+    const dayAgo = Date.now() - 24 * 60 * 60 * 1000;
+    return raw.filter((t) => typeof t === 'number' && t > dayAgo);
+  } catch {
+    return [];
+  }
+}
+
+function recordSuggestionTime(times) {
+  try {
+    localStorage.setItem(SUGGESTIONS_STORE_KEY, JSON.stringify([...times, Date.now()]));
+  } catch {
+    /* private browsing - limit simply doesn't persist */
+  }
+}
+
+function initSuggestionsForm() {
+  const form = document.getElementById('suggestions-form');
+  if (!form) return;
+
+  const hint = document.getElementById('suggestions-hint');
+  const submitBtn = form.querySelector('.suggestions__submit');
+  const emailField = form.elements.email;
+  const setHint = (message) => {
+    if (hint) hint.textContent = message;
+  };
+
+  // Clear the strict-validation error as soon as the user edits the field,
+  // so the browser doesn't keep blocking submits with a stale message.
+  emailField.addEventListener('input', () => {
+    emailField.setCustomValidity('');
+    setHint('');
+  });
+
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    emailField.setCustomValidity(validateEmailStrict(emailField.value));
+    if (!form.reportValidity()) return;
+
+    const times = recentSuggestionTimes();
+    if (times.length >= SUGGESTIONS_MAX_PER_DAY) {
+      setHint(`You've reached the limit of ${SUGGESTIONS_MAX_PER_DAY} messages per day. Please try again tomorrow.`);
+      return;
+    }
+    const last = times[times.length - 1];
+    if (last && Date.now() - last < SUGGESTIONS_MIN_INTERVAL_MS) {
+      setHint('Please wait a minute before sending another message.');
+      return;
+    }
+
+    const email = form.elements.email.value.trim();
+    const message = form.elements.message.value.trim();
+
+    if (SUGGESTIONS_ENDPOINT) {
+      if (submitBtn) submitBtn.disabled = true;
+      try {
+        const res = await fetch(SUGGESTIONS_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, message }),
+        });
+        if (!res.ok) throw new Error(String(res.status));
+        recordSuggestionTime(times);
+        form.reset();
+        setHint('');
+        showTransientToast('Message sent - thank you!');
+      } catch {
+        showTransientToast('Could not send message. Please try again.');
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+      return;
+    }
+
+    // No endpoint configured: open a pre-filled email draft instead.
+    const subject = encodeURIComponent('Luminy suggestion');
+    const body = encodeURIComponent(`${message}\n\n- ${email}`);
+    window.location.href = `mailto:${SUPPORT_EMAIL}?subject=${subject}&body=${body}`;
+    recordSuggestionTime(times);
+    setHint('');
+    showTransientToast('Email draft opened');
+  });
 }
 
 /* ------------------------------------------------------- ambient scroll */
@@ -329,6 +456,87 @@ function initAuthLinks() {
   if (signup) signup.href = SIGNUP_URL;
 }
 
+/* ---------------------------------------------------- why-free dialog */
+
+const WHY_FREE_PARAGRAPHS = [
+  'Unfortunately, our backend servers cost money to fetch data from financial institutions and host our application.',
+  "We're also in this for the long term. Luminy started as a private tool for creators and close friends - and the people with early access found it so useful that we decided to release it to the public.",
+  'We genuinely enjoy this product, and we want to keep improving it for years to come.',
+];
+const WHY_FREE_CHAR_MS = 14;
+const WHY_FREE_PARAGRAPH_PAUSE_MS = 350;
+
+/** "Why isn't Luminy free?" - opens a dialog that types out the answer. */
+function initWhyFreeDialog() {
+  const trigger = document.querySelector('[data-why-free-trigger]');
+  const dialog = document.querySelector('[data-why-free-dialog]');
+  if (!trigger || !dialog || typeof dialog.showModal !== 'function') return;
+
+  const body = dialog.querySelector('[data-why-free-body]');
+  const closeBtn = dialog.querySelector('[data-why-free-close]');
+  let timerId = null;
+
+  const stopStreaming = () => {
+    if (timerId !== null) {
+      clearTimeout(timerId);
+      timerId = null;
+    }
+  };
+
+  const stream = () => {
+    body.replaceChildren();
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      for (const text of WHY_FREE_PARAGRAPHS) {
+        const p = document.createElement('p');
+        p.className = 'why-free__p';
+        p.textContent = text;
+        body.appendChild(p);
+      }
+      return;
+    }
+
+    let paragraphIndex = 0;
+    let charIndex = 0;
+    let current = null;
+
+    const tick = () => {
+      if (paragraphIndex >= WHY_FREE_PARAGRAPHS.length) {
+        timerId = null;
+        return;
+      }
+      if (!current) {
+        current = document.createElement('p');
+        current.className = 'why-free__p';
+        body.appendChild(current);
+      }
+      const text = WHY_FREE_PARAGRAPHS[paragraphIndex];
+      charIndex += 1;
+      current.textContent = text.slice(0, charIndex);
+      if (charIndex >= text.length) {
+        paragraphIndex += 1;
+        charIndex = 0;
+        current = null;
+        timerId = window.setTimeout(tick, WHY_FREE_PARAGRAPH_PAUSE_MS);
+      } else {
+        timerId = window.setTimeout(tick, WHY_FREE_CHAR_MS);
+      }
+    };
+    tick();
+  };
+
+  trigger.addEventListener('click', () => {
+    dialog.showModal();
+    stopStreaming();
+    stream();
+  });
+  closeBtn.addEventListener('click', () => dialog.close());
+  dialog.addEventListener('close', stopStreaming);
+  // Click on the backdrop (outside the dialog's content box) closes it.
+  dialog.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+}
+
 /* ----------------------------------------------------------------- boot */
 
 function boot() {
@@ -339,8 +547,10 @@ function boot() {
   initNavbarMorph();
   initNavbarMega();
   initSupportEmailCopy();
+  initSuggestionsForm();
   initIncludesCarousel();
   initPricingToggle();
+  initWhyFreeDialog();
 }
 
 if (document.readyState === 'loading') {
