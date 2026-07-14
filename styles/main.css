@@ -1100,7 +1100,7 @@
 
 @media (min-width: 900px) {
   .hero__grid {
-    grid-template-columns: minmax(0, 1.42fr) minmax(0, 0.58fr);
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
     gap: clamp(1.75rem, 2.5vw, 2.75rem);
   }
 }
