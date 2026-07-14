@@ -11,7 +11,7 @@ const SUPPORT_EMAIL = 'support@luminyy.com';
 /* Luminy app (luminyy-frontend). Auto-switches: local dev server while the
    landing site itself is served locally, deployed app otherwise. */
 const IS_LOCAL = ['localhost', '127.0.0.1'].includes(window.location.hostname);
-const APP_BASE_URL = IS_LOCAL ? 'http://127.0.0.1:8765' : 'https://app.luminyy.com';
+const APP_BASE_URL = IS_LOCAL ? 'http://127.0.0.1:8765' : 'https://app.luminyy.com/app';
 const SIGNUP_URL = `${APP_BASE_URL}/onboarding/onboarding.html`;
 const LOGIN_URL = `${APP_BASE_URL}/dashboard/dashboard.html`;
 
