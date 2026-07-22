@@ -1937,6 +1937,310 @@
   object-position: top center;
 }
 
+/* Rebuilt Home slide — real app components as sprites, spacing on an 8pt grid.
+   Every section shares the same --lp-pad side margins. */
+.lp-home {
+  --lp-pad: 16px;
+  position: relative;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding-bottom: 104px; /* keeps the account card clear of the pill + tab bar */
+  background: linear-gradient(180deg, #eaf2fe 0%, #f3f7fe 55%, #e4eef9 100%);
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto,
+    sans-serif;
+  color: #0f172a;
+  text-align: left;
+}
+
+.lp-home__status {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.lp-home__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px var(--lp-pad) 0;
+}
+
+.lp-home__brandicon {
+  width: 17px;
+  height: 17px;
+}
+
+.lp-home__brand {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.lp-home__eye {
+  width: 26px;
+  height: 26px;
+  margin-left: auto;
+  border-radius: 50%;
+}
+
+.lp-home__networth {
+  padding: 16px var(--lp-pad) 0;
+}
+
+.lp-home__label {
+  margin: 0;
+  font-size: 10px;
+  font-weight: 500;
+  color: #475569;
+}
+
+.lp-home__value {
+  margin: 2px 0 0;
+  font-size: 23px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.lp-home__delta {
+  margin: 4px 0 0;
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #059669;
+}
+
+.lp-home__chart {
+  display: block;
+  width: 100%;
+  flex: 1 1 auto;
+  min-height: 56px;
+  max-height: 104px;
+  margin-top: 8px;
+}
+
+.lp-home__tabs {
+  display: flex;
+  gap: 16px;
+  padding: 8px var(--lp-pad) 7px;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  font-size: 9.5px;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.lp-home__tab--on {
+  position: relative;
+  color: #059669;
+}
+
+.lp-home__tab--on::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -8px;
+  height: 2px;
+  border-radius: 2px;
+  background: #059669;
+}
+
+.lp-home__flow {
+  display: flex;
+  padding: 12px var(--lp-pad) 0;
+}
+
+.lp-home__flow-col {
+  flex: 1;
+}
+
+.lp-home__flow-h {
+  margin: 0;
+  font-size: 9px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.lp-home__flow-h span {
+  margin-left: 4px;
+  font-weight: 400;
+  color: #94a3b8;
+}
+
+.lp-home__flow-v {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.lp-home__fdot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.lp-home__fdot--g {
+  background: #059669;
+}
+
+.lp-home__fdot--r {
+  background: #dc2626;
+}
+
+.lp-home__accounts-h {
+  margin: 0;
+  padding: 16px var(--lp-pad) 8px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.lp-home__card {
+  margin: 0 var(--lp-pad);
+  border-radius: 14px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+.lp-home__band {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  background: #e3eefc;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #334155;
+}
+
+.lp-home__chev {
+  flex: none;
+}
+
+.lp-home__row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+}
+
+.lp-home__row + .lp-home__row,
+.lp-home__band--foot {
+  border-top: 1px solid rgba(15, 23, 42, 0.06);
+}
+
+.lp-home__bicon {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.lp-home__bicon--marcus {
+  height: auto;
+  border-radius: 0;
+}
+
+.lp-home__rname {
+  margin: 0;
+  font-size: 10.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.lp-home__rname span {
+  font-size: 8.5px;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+}
+
+.lp-home__ramt {
+  margin-left: auto;
+  text-align: right;
+}
+
+.lp-home__ramt p {
+  margin: 0;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.lp-home__ramt span {
+  font-size: 8px;
+  color: #94a3b8;
+}
+
+.lp-home__pill {
+  position: absolute;
+  right: 12px;
+  bottom: 72px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.16);
+}
+
+.lp-home__pill img {
+  width: 16px;
+  height: 16px;
+  display: block;
+}
+
+.lp-home__plus {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.lp-home__tabbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  display: block;
+}
+
+@media (max-width: 899px) {
+  .lp-home {
+    --lp-pad: 12px;
+    padding-bottom: 84px;
+  }
+
+  .lp-home__value {
+    font-size: 19px;
+  }
+
+  .lp-home__chart {
+    min-height: 36px;
+  }
+
+  .lp-home__networth,
+  .lp-home__accounts-h {
+    padding-top: 12px;
+  }
+
+  .lp-home__row {
+    padding: 8px 12px;
+  }
+
+  .lp-home__pill {
+    bottom: 62px;
+    gap: 11px;
+    padding: 7px 12px;
+  }
+}
+
 .includes__dots {
   display: flex;
   gap: 0.45rem;
