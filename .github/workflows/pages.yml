@@ -1,0 +1,81 @@
+# Landing site CI/CD — build (esbuild minify) + deploy to GitHub Pages.
+#
+# Replaces the legacy "deploy from branch" Pages mode: the minified bundles
+# (js/site.min.js, styles/main.min.css) are rebuilt from source on every push,
+# so a stale committed .min file can never ship. After the first successful run,
+# the repo's Pages source must be switched to "GitHub Actions"
+# (Settings → Pages → Source, or:
+#   gh api repos/luminyyAI/landing/pages -X PUT -F build_type=workflow ).
+# The custom domain (luminyy.com) is a repo setting and carries over unchanged.
+name: Deploy landing site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One deploy at a time; a newer push supersedes an in-flight queued run but
+# never cancels a deployment already in progress.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build minified bundles
+        run: npm run minify
+
+      - name: Sanity-check build output
+        run: |
+          test -s js/site.min.js
+          test -s styles/main.min.css
+          # Every page must reference the minified assets it just built.
+          grep -q 'styles/main.min.css' index.html
+          grep -q 'js/site.min.js' index.html
+
+      - name: Assemble site
+        run: |
+          mkdir -p _site
+          rsync -a \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude 'node_modules' \
+            --exclude '_site' \
+            --exclude 'notes.txt' \
+            --exclude 'package.json' \
+            --exclude 'package-lock.json' \
+            --exclude 'js/site.src.js' \
+            --exclude 'styles/main.css' \
+            --exclude 'styles/tokens.css' \
+            ./ _site/
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

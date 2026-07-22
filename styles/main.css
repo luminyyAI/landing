@@ -892,17 +892,36 @@
 }
 
 @media (max-width: 900px) {
+  /* Mobile: the two-row bar is too tall to pin — let it scroll away with the
+     page so content never slides underneath it. */
+  .nav,
+  .nav.nav--scrolled {
+    position: static;
+    background: transparent;
+    box-shadow: none;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
   .nav__inner {
     flex-wrap: wrap;
     row-gap: 0.5rem;
     padding-top: 0.2rem;
-    padding-bottom: 0;
+    padding-bottom: 0.5rem;
+  }
+
+  /* The links live inside the center slot, so the slot itself must drop to
+     its own full-width row — otherwise it gets squeezed between the brand
+     and the actions and the links stack vertically. */
+  .nav__center-slot {
+    order: 3;
+    flex-basis: 100%;
   }
 
   .nav__links {
     order: 3;
     flex-basis: 100%;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 1rem 1.25rem;
     flex-wrap: wrap;
   }
@@ -920,6 +939,24 @@
   .nav__cta {
     font-size: 0.85rem;
     padding: 0.4rem 0.85rem;
+  }
+
+  /* Compact brand so the two-row bar doesn't eat the first screen. */
+  .nav__logo {
+    width: 56px;
+    height: 56px;
+  }
+
+  .nav__brand {
+    font-size: 1.7rem;
+  }
+
+  .nav__links {
+    gap: 0.7rem 1rem;
+  }
+
+  .nav__links .nav__link {
+    font-size: 0.88rem;
   }
 }
 
@@ -1675,6 +1712,13 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.042);
 }
 
+@media (max-width: 899px) {
+  .features,
+  .why-choose-luminy {
+    min-height: auto;
+  }
+}
+
 /* Features / Includes — Cal-style showcase + Embla carousel */
 .features.includes {
   --includes-radius-card: 16px;
@@ -1795,7 +1839,7 @@
     flex-direction: column;
     width: auto;
     max-width: 100%;
-    aspect-ratio: 9 / 16;
+    aspect-ratio: 9 / 19;
   }
 
   .includes__screen {
@@ -1844,8 +1888,27 @@
   border-radius: 34px;
   overflow: hidden;
   background: #f5f5f7;
-  aspect-ratio: 9 / 17;
+  aspect-ratio: 603 / 1311;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+}
+
+/* Mobile: smaller frame keeps the fixed-px mock UI looking dense instead of
+   a mostly-empty 640px-tall screen. (After the base rules so it wins.) */
+@media (max-width: 899px) {
+  .includes__device {
+    max-width: 250px;
+    margin-inline: auto;
+    border-radius: 36px;
+  }
+
+  .includes__screen {
+    border-radius: 28px;
+    aspect-ratio: 603 / 1311;
+  }
+
+  .includes__notch {
+    height: 18px;
+  }
 }
 
 .includes__embla-viewport {
@@ -1864,8 +1927,14 @@
   flex: 0 0 100%;
   min-width: 0;
   height: 100%;
-  padding: clamp(1.35rem, 4vw, 1.65rem) 0.85rem 1rem;
-  box-sizing: border-box;
+}
+
+.includes__shot {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
 }
 
 .includes__dots {
@@ -3031,27 +3100,84 @@
 
 .value-props__layout {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
   width: 100%;
   margin-top: var(--space-md);
 }
 
+/* Phone mockup pinned to the left half; the statement wraps in the right half. */
+.value-props__media {
+  flex: 0 0 auto;
+  position: relative;
+}
+
+/* Ambient glow — soft brand-blue (#6198fc) light radiating from behind the phone,
+   as if the screen is casting light into the section. Sits under the img. */
+.value-props__media::before {
+  content: "";
+  position: absolute;
+  inset: -26% -52%;
+  background: radial-gradient(
+    ellipse 50% 46% at 50% 48%,
+    rgba(97, 152, 252, 0.55) 0%,
+    rgba(97, 152, 252, 0.28) 45%,
+    rgba(97, 152, 252, 0) 74%
+  );
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.value-props__img {
+  position: relative;
+  width: clamp(180px, 22vw, 245px);
+  height: auto;
+  /* The two tight dark shadows hug the phone's silhouette and mask the slightly
+     ragged cut-out edges of the PNG (they read as part of the dark bezel);
+     the big soft one is the actual floating shadow. */
+  filter: drop-shadow(0 0 1px rgba(15, 17, 21, 0.85))
+    drop-shadow(0 1px 2px rgba(15, 17, 21, 0.35))
+    drop-shadow(0 24px 48px rgba(0, 0, 0, 0.16));
+}
+
 .value-props__copy {
-  max-width: 100%;
+  max-width: 34rem;
   text-align: right;
 }
 
-/* Sized so the whole sentence stays on one line within the 980px
-   container; below 680px it re-wraps (see media query below). */
 .value-props__statement {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1rem, 2.3vw, 1.45rem);
+  font-size: clamp(1.35rem, 2.4vw, 1.9rem);
   font-weight: 600;
-  line-height: 1.14;
+  line-height: 1.2;
   letter-spacing: -0.032em;
   color: var(--color-text);
-  white-space: nowrap;
+  text-wrap: balance;
+}
+
+@media (max-width: 760px) {
+  /* Content-sized band — the full-viewport height leaves a screen of dead
+     space around the small phone + statement on phones. */
+  .value-props {
+    min-height: auto;
+    padding-block: clamp(3rem, 12vw, 5rem);
+  }
+
+  .value-props__layout {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-lg);
+  }
+
+  .value-props__img {
+    width: min(46vw, 230px);
+  }
+
+  .value-props__copy {
+    text-align: center;
+  }
 }
 
 .value-props__why {
@@ -3285,6 +3411,12 @@
   margin: 0;
   text-align: center;
   font-size: clamp(2.6rem, 5.6vw, 3.4rem);
+}
+
+/* Keeps "Lumıny" on one line: the inline-block logo-i span otherwise
+   introduces a break opportunity inside the word on narrow screens. */
+.why-choose-luminy__word {
+  white-space: nowrap;
 }
 
 /* The "i" in Luminy: dotless stem with the logo standing in for the tittle. */
