@@ -5974,26 +5974,33 @@
    ========================================================================== */
 
 .fb {
-  --fb-bg: #070b16;
-  --fb-card: #0d1426;
-  --fb-card-2: #111a2f;
-  --fb-line: rgba(255, 255, 255, 0.07);
-  --fb-line-strong: rgba(255, 255, 255, 0.12);
-  --fb-text: #f2f5fb;
-  --fb-muted: rgba(226, 232, 240, 0.6);
-  --fb-green: #34d399;
-  --fb-red: #f87171;
-  --fb-blue: #60a5fa;
-  --fb-amber: #fbbf24;
-  --fb-purple: #a78bfa;
+  /* Palette mirrors the Luminy app's dark theme (iOS DesignSystem.swift).
+     Keep these in sync with Color.bgDeep / cardSurface / accentIndigo / etc. */
+  --fb-bg: #0b1220;          /* bgDeep / pageTop */
+  --fb-bg-2: #0e1626;        /* pageBottom */
+  --fb-card: #16213a;        /* cardSurface / bgElevated */
+  --fb-card-2: #111a2c;      /* bgMid */
+  --fb-line: rgba(255, 255, 255, 0.12);        /* cardBorder */
+  --fb-line-strong: rgba(255, 255, 255, 0.18);
+  --fb-fill: rgba(255, 255, 255, 0.08);        /* chipFill */
+  --fb-text: #e6ecf5;        /* textMain */
+  --fb-muted: #9aa8bd;       /* textMuted */
+  --fb-dim: #7a89a0;         /* textDim */
+  --fb-green: #34d399;       /* accentGreen */
+  --fb-red: #f87171;         /* dangerRed */
+  --fb-blue: #3b82f6;        /* accentIndigo */
+  --fb-brand: #6097fc;       /* brandBlue */
+  --fb-amber: #f29820;       /* category · dining */
+  --fb-purple: #8b50e2;      /* category · entertainment */
+  --fb-cyan: #2ab5df;        /* category · transport */
 
   position: relative;
   margin-block: 0;
   padding-block: clamp(3rem, 7vw, 5.5rem);
   background:
-    radial-gradient(120% 80% at 15% 0%, rgba(59, 130, 246, 0.16) 0%, transparent 55%),
-    radial-gradient(100% 70% at 90% 10%, rgba(139, 92, 246, 0.13) 0%, transparent 50%),
-    var(--fb-bg);
+    radial-gradient(120% 80% at 15% 0%, rgba(59, 130, 246, 0.22) 0%, transparent 55%),
+    radial-gradient(100% 70% at 90% 10%, rgba(96, 151, 252, 0.14) 0%, transparent 50%),
+    linear-gradient(180deg, var(--fb-bg) 0%, var(--fb-bg-2) 100%);
   color: var(--fb-text);
 }
 
@@ -6015,7 +6022,7 @@
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--fb-blue);
+  color: var(--fb-brand);
   margin-bottom: 0.9rem;
 }
 
@@ -6080,8 +6087,8 @@
   padding: clamp(1.4rem, 2.4vw, 2rem);
   border: 1px solid var(--fb-line);
   border-radius: 22px;
-  background: linear-gradient(165deg, var(--fb-card-2) 0%, var(--fb-card) 60%);
-  box-shadow: 0 18px 48px rgba(2, 6, 18, 0.5);
+  background: var(--fb-card);
+  box-shadow: 0 18px 48px rgba(11, 18, 32, 0.55);
 }
 
 /* Side-by-side copy + mockup on the two-column cards, so the mockup can be
@@ -6147,7 +6154,7 @@
   padding: 1rem 1.1rem;
   border: 1px solid var(--fb-line);
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.035);
+  background: var(--fb-card-2);
   font-size: 0.9rem;
 }
 
@@ -6162,7 +6169,7 @@
   font-weight: 600;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: rgba(226, 232, 240, 0.45);
+  color: var(--fb-dim);
   margin: 0 0 0.7rem;
 }
 
@@ -6201,7 +6208,7 @@
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
   white-space: nowrap;
 }
 
@@ -6224,7 +6231,7 @@
 }
 
 .fb-row__meta {
-  color: rgba(226, 232, 240, 0.45);
+  color: var(--fb-dim);
   font-size: 0.82rem;
   font-variant-numeric: tabular-nums;
 }
@@ -6258,24 +6265,24 @@
 }
 
 .fb-chip--ent {
-  color: #fda4af;
-  background: rgba(244, 63, 94, 0.16);
+  color: #c9a4f5;
+  background: rgba(139, 80, 226, 0.18);
 }
 .fb-chip--gro {
-  color: #86efac;
-  background: rgba(34, 197, 94, 0.15);
+  color: #6ee7b7;
+  background: rgba(52, 211, 153, 0.16);
 }
 .fb-chip--din {
-  color: #d8b4fe;
-  background: rgba(168, 85, 247, 0.16);
+  color: #f6b86a;
+  background: rgba(242, 152, 32, 0.18);
 }
 .fb-chip--cof {
-  color: #fcd9a8;
-  background: rgba(217, 119, 6, 0.18);
+  color: #f0c9a0;
+  background: rgba(180, 110, 40, 0.2);
 }
 .fb-chip--trn {
-  color: #fde68a;
-  background: rgba(234, 179, 8, 0.15);
+  color: #7fd4ec;
+  background: rgba(42, 181, 223, 0.16);
 }
 
 /* --- dot / avatar ------------------------------------------------------ */
@@ -6307,7 +6314,7 @@
   display: grid;
   place-items: center;
   border-radius: 8px;
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--fb-fill);
   font-size: 13px;
 }
 
@@ -6333,9 +6340,9 @@
   border-radius: 10px;
   font-size: 12px;
   font-weight: 700;
-  color: #04240f;
+  color: #06281a;
   background: var(--fb-green);
-  box-shadow: 0 6px 18px rgba(52, 211, 153, 0.28);
+  box-shadow: 0 6px 18px rgba(52, 211, 153, 0.3);
   white-space: nowrap;
 }
 
@@ -6345,7 +6352,7 @@
   margin-top: 0.5rem;
   font-size: 10px;
   letter-spacing: 0.06em;
-  color: rgba(226, 232, 240, 0.35);
+  color: var(--fb-dim);
 }
 
 /* --- bars -------------------------------------------------------------- */
@@ -6372,13 +6379,13 @@
   width: 100%;
   max-width: 26px;
   border-radius: 6px 6px 3px 3px;
-  background: linear-gradient(180deg, var(--fb-green), rgba(52, 211, 153, 0.35));
+  background: linear-gradient(180deg, var(--fb-green), rgba(52, 211, 153, 0.3));
 }
 
 .fb-bars__label {
   font-size: 10px;
   letter-spacing: 0.06em;
-  color: rgba(226, 232, 240, 0.4);
+  color: var(--fb-dim);
 }
 
 /* --- progress ---------------------------------------------------------- */
@@ -6397,7 +6404,7 @@
 .fb-meter__track {
   height: 8px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--fb-fill);
   overflow: hidden;
 }
 
@@ -6405,7 +6412,7 @@
   display: block;
   height: 100%;
   border-radius: 999px;
-  background: linear-gradient(90deg, var(--fb-green), var(--fb-amber));
+  background: linear-gradient(90deg, var(--fb-blue), var(--fb-green));
 }
 
 .fb-meter__fill--hot {
@@ -6432,16 +6439,16 @@
 .fb-chat__ask {
   align-self: flex-end;
   background: var(--fb-blue);
-  color: #06182f;
+  color: #ffffff;
   font-weight: 500;
   border-bottom-right-radius: 5px;
 }
 
 .fb-chat__reply {
   align-self: flex-start;
-  background: rgba(255, 255, 255, 0.07);
+  background: var(--fb-card-2);
   border: 1px solid var(--fb-line);
-  color: rgba(241, 245, 249, 0.92);
+  color: var(--fb-text);
   border-bottom-left-radius: 5px;
 }
 
@@ -6462,13 +6469,13 @@
 }
 
 .fb-status--ok {
-  color: #86efac;
-  background: rgba(34, 197, 94, 0.14);
+  color: #6ee7b7;
+  background: rgba(52, 211, 153, 0.14);
 }
 
 .fb-status--warn {
-  color: #fcd34d;
-  background: rgba(245, 158, 11, 0.16);
+  color: #f6b86a;
+  background: rgba(242, 152, 32, 0.16);
 }
 
 .fb-banner {
@@ -6478,9 +6485,9 @@
   margin-bottom: 0.75rem;
   padding: 0.6rem 0.75rem;
   border-radius: 12px;
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  background: rgba(245, 158, 11, 0.1);
-  color: #fcd34d;
+  border: 1px solid rgba(242, 152, 32, 0.32);
+  background: rgba(242, 152, 32, 0.1);
+  color: #f6b86a;
   font-size: 0.85rem;
   font-weight: 500;
 }
@@ -6491,16 +6498,16 @@
   width: 172px;
   margin: 0 auto -2.5rem;
   padding: 8px 8px 0;
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  border: 1px solid var(--fb-line-strong);
   border-radius: 26px 26px 6px 6px;
-  background: #05080f;
-  box-shadow: 0 -4px 40px rgba(96, 165, 250, 0.18);
+  background: #0b1220;
+  box-shadow: 0 -4px 40px rgba(96, 151, 252, 0.2);
 }
 
 .fb-phone__screen {
   border-radius: 20px 20px 0 0;
   padding: 0.85rem 0.75rem 1.4rem;
-  background: linear-gradient(180deg, #101a30, #0a1120);
+  background: linear-gradient(180deg, var(--fb-bg) 0%, var(--fb-bg-2) 100%);
 }
 
 .fb-phone__notch {
@@ -6508,7 +6515,7 @@
   height: 5px;
   margin: 0 auto 0.7rem;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.22);
+  background: var(--fb-line-strong);
 }
 
 .fb-phone__figure {
@@ -6548,19 +6555,19 @@
   padding: 0.7rem 1.4rem;
   border-radius: 999px;
   font-weight: 600;
-  color: #06182f;
-  background: #ffffff;
+  color: #ffffff;
+  background: var(--fb-brand);
   transition: transform 0.18s ease, box-shadow 0.18s ease;
 }
 
 .fb__cta:hover {
   transform: translateY(-1px);
-  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.16);
+  box-shadow: 0 10px 30px rgba(96, 151, 252, 0.35);
 }
 
 .fb__cta:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.5);
+  box-shadow: 0 0 0 3px rgba(96, 151, 252, 0.55);
 }
 
 @media (prefers-reduced-motion: reduce) {
