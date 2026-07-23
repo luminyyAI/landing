@@ -3824,43 +3824,42 @@
   color: rgba(15, 23, 42, 0.82);
 }
 
-/* Logo chip before each item: blue glass tile with rolling waves behind
-   the Luminy mark (same wave treatment as the feature icon tiles). */
+/* The Luminy mark itself is the window: the box is masked to the logo
+   silhouette, so the rolling waves show through the glyph like liquid glass.
+   The PNG mark fills ~48% of its canvas, hence the oversized mask-size. */
 .value-props__list-mark {
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0.16em;
-  width: 24px;
-  height: 24px;
-  border-radius: 8px;
+  display: block;
+  margin-top: 0.2em;
+  width: 26px;
+  height: 26px;
   background: linear-gradient(160deg, #5c9dff 0%, #2563eb 55%, #1d4ed8 100%);
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.28);
+  -webkit-mask: url('/images/luminy-removebg.png') center / 210% 210% no-repeat;
+  mask: url('/images/luminy-removebg.png') center / 210% 210% no-repeat;
 }
 
 /* Two oversized rounded squares spinning at different speeds: their curved
-   edges read as a waterline rolling behind the mark. */
+   edges read as a waterline rolling behind the glyph. */
 .value-props__list-mark::before,
 .value-props__list-mark::after {
   content: '';
   position: absolute;
   left: 50%;
-  top: 56%;
-  width: 220%;
+  top: 52%;
+  width: 240%;
   aspect-ratio: 1;
-  margin-left: -110%;
+  margin-left: -120%;
   border-radius: 42%;
-  background: rgba(191, 219, 254, 0.55);
+  background: rgba(191, 219, 254, 0.75);
   animation: value-props-wave 7s linear infinite;
 }
 
 .value-props__list-mark::after {
-  top: 64%;
+  top: 62%;
   border-radius: 46%;
-  background: rgba(255, 255, 255, 0.42);
+  background: rgba(255, 255, 255, 0.6);
   animation-duration: 11s;
   animation-direction: reverse;
 }
@@ -3871,7 +3870,7 @@
   }
 }
 
-/* Stagger so the chips never roll in lockstep. */
+/* Stagger so the marks never roll in lockstep. */
 .value-props__list-item:nth-child(2) .value-props__list-mark::before {
   animation-delay: -1.4s;
 }
@@ -3894,14 +3893,6 @@
 
 .value-props__list-item:nth-child(4) .value-props__list-mark::after {
   animation-delay: -6.6s;
-}
-
-.value-props__list-mark img {
-  position: relative;
-  z-index: 1;
-  width: 15px;
-  height: 15px;
-  object-fit: contain;
 }
 
 @media (prefers-reduced-motion: reduce) {
