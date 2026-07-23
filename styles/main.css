@@ -3744,7 +3744,7 @@
 }
 
 .value-props__copy {
-  max-width: 44rem;
+  max-width: 50rem;
   text-align: left;
   /* heading sits near the top of the section, not vertically centered */
   align-self: flex-start;
@@ -3799,9 +3799,16 @@
    two groups side by side on desktop. */
 .value-props__lists {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  /* content-sized columns so the longest item keeps to a single line */
+  grid-template-columns: repeat(2, max-content);
   gap: 1.5rem 2.25rem;
   margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+}
+
+@media (min-width: 1100px) {
+  .value-props__list-item {
+    white-space: nowrap;
+  }
 }
 
 .value-props__list-label {
