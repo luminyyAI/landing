@@ -3744,21 +3744,54 @@
 }
 
 .value-props__copy {
-  max-width: 34rem;
+  max-width: 38rem;
   text-align: left;
   /* heading sits near the top of the section, not vertically centered */
   align-self: flex-start;
   margin-top: var(--space-md);
+  /* nudge the whole block toward the section's left edge */
+  margin-left: clamp(-56px, -3vw, 0px);
 }
 
 .value-props__heading {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(1.9rem, 3.1vw, 2.6rem);
+  font-size: clamp(2.3rem, 3.8vw, 3.2rem);
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.032em;
   color: var(--color-text);
+}
+
+/* Link to the full feature list, under the two columns. */
+.value-props__features-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: clamp(1.5rem, 3vw, 2rem);
+  padding: 0.72rem 1.35rem;
+  border-radius: 999px;
+  background: #4d99ff;
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 8px 20px rgba(77, 153, 255, 0.32);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.value-props__features-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(77, 153, 255, 0.42);
+}
+
+.value-props__features-arrow {
+  transition: transform 0.2s ease;
+}
+
+.value-props__features-btn:hover .value-props__features-arrow {
+  transform: translateX(3px);
 }
 
 /* Grouped info lists under the heading — eyebrow label + check items,
@@ -3846,6 +3879,8 @@
 
   .value-props__copy {
     text-align: center;
+    margin-left: 0;
+    align-self: center;
   }
 
   /* Lists stack in one centered column; items stay left-aligned so the
