@@ -3756,7 +3756,9 @@
 .value-props__heading {
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.8rem, 4.6vw, 4rem);
+  /* Sized to keep the headline on a single line at desktop widths. */
+  font-size: clamp(2.1rem, 3.9vw, 3.5rem);
+  white-space: nowrap;
   font-weight: 600;
   line-height: 1.15;
   letter-spacing: -0.032em;
@@ -3813,9 +3815,9 @@
 
 .value-props__list-label {
   margin: 0 0 0.85rem;
-  font-size: 0.875rem;
+  font-size: 1.4rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   line-height: 1;
   color: #2563eb;
@@ -3852,8 +3854,56 @@
   background:
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E")
       center / 13px 13px no-repeat,
-    linear-gradient(160deg, #3b82f6 0%, #1d4ed8 100%);
+    linear-gradient(
+      120deg,
+      #60a5fa 0%,
+      #1d4ed8 25%,
+      #4f46e5 50%,
+      #1d4ed8 75%,
+      #60a5fa 100%
+    );
+  background-size:
+    13px 13px,
+    320% 320%;
+  background-position:
+    center,
+    0% 50%;
+  background-repeat: no-repeat, no-repeat;
   box-shadow: 0 2px 6px rgba(37, 99, 235, 0.28);
+  animation: value-props-check-flow 4.5s ease-in-out infinite;
+}
+
+@keyframes value-props-check-flow {
+  0%,
+  100% {
+    background-position:
+      center,
+      0% 50%;
+  }
+  50% {
+    background-position:
+      center,
+      100% 50%;
+  }
+}
+
+/* Stagger so the chips shimmer in sequence rather than in lockstep. */
+.value-props__list-item:nth-child(2)::before {
+  animation-delay: -0.9s;
+}
+
+.value-props__list-item:nth-child(3)::before {
+  animation-delay: -1.8s;
+}
+
+.value-props__list-item:nth-child(4)::before {
+  animation-delay: -2.7s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .value-props__list-item::before {
+    animation: none;
+  }
 }
 
 .value-props__statement {
@@ -3889,6 +3939,11 @@
     text-align: center;
     margin-left: 0;
     align-self: center;
+  }
+
+  /* Narrow screens: let the headline wrap rather than overflow. */
+  .value-props__heading {
+    white-space: normal;
   }
 
   /* Lists stack in one centered column; items stay left-aligned so the
