@@ -1839,12 +1839,12 @@
     flex-direction: column;
     width: auto;
     max-width: 100%;
-    aspect-ratio: 9 / 18;
   }
 
+  /* Screen keeps the screenshot's exact ratio (base rule) so object-fit
+     never crops; the device wraps it, height still spans the card stack. */
   .includes__screen {
     flex: 1;
-    aspect-ratio: auto;
   }
 
   /* Dots hang below the column so the device itself spans the full
@@ -3411,10 +3411,13 @@
   margin-top: var(--space-md);
 }
 
-/* Phone mockup pinned to the left half; the statement wraps in the right half. */
+/* Phone mockup pinned to the left half; the statement wraps in the right half.
+   Padding reproduces the transparent margins the old mockup PNG had baked in,
+   so the phone keeps the exact footprint/position it always had. */
 .value-props__media {
   flex: 0 0 auto;
   position: relative;
+  padding: 18px 14px 27px 15px;
 }
 
 /* Ambient glow — soft brand-blue (#6198fc) light radiating from behind the phone,
@@ -3435,7 +3438,7 @@
 
 .value-props__device {
   position: relative;
-  width: clamp(180px, 22vw, 245px);
+  width: clamp(159px, 19.4vw, 216px);
   padding: 9px;
   border-radius: 42px;
   background: linear-gradient(145deg, #2c2c2e 0%, #1c1c1e 40%, #3a3a3c 100%);
@@ -3483,7 +3486,7 @@
   }
 
   .value-props__device {
-    width: min(46vw, 230px);
+    width: min(40.5vw, 202px);
   }
 
   .value-props__copy {
