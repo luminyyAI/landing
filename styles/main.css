@@ -3427,6 +3427,8 @@
   flex: 0 0 auto;
   position: relative;
   padding: 18px 14px 27px 15px;
+  /* nudge the phone toward the section's right edge */
+  margin-right: -28px;
 }
 
 /* Ambient glow — soft brand-blue (#6198fc) light radiating from behind the phone,
@@ -3469,6 +3471,19 @@
 .value-props__copy {
   max-width: 34rem;
   text-align: left;
+  /* heading sits near the top of the section, not vertically centered */
+  align-self: flex-start;
+  margin-top: var(--space-md);
+}
+
+.value-props__heading {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.032em;
+  color: var(--color-text);
 }
 
 .value-props__statement {
