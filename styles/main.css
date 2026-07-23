@@ -3759,7 +3759,7 @@
 .why-choose-luminy .container {
   width: 100%;
   /* Wider than the site default so 4 cards sit comfortably in one row. */
-  max-width: 1240px;
+  max-width: 1420px;
   /* Nudge the whole content block a little higher than dead-center. */
   margin-top: -9vh;
 }
@@ -3792,9 +3792,9 @@
 
 @media (min-width: 1024px) {
   .why-choose-luminy__grid {
-    grid-template-columns: repeat(4, minmax(230px, 1fr));
+    grid-template-columns: repeat(4, minmax(260px, 1fr));
     gap: 24px;
-    max-width: 1180px;
+    max-width: 1360px;
   }
 }
 
