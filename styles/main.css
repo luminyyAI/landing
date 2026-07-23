@@ -1839,7 +1839,7 @@
     flex-direction: column;
     width: auto;
     max-width: 100%;
-    aspect-ratio: 9 / 19;
+    aspect-ratio: 9 / 18;
   }
 
   .includes__screen {
@@ -1888,7 +1888,7 @@
   border-radius: 34px;
   overflow: hidden;
   background: #f5f5f7;
-  aspect-ratio: 603 / 1311;
+  aspect-ratio: 603 / 1230;
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
 }
 
@@ -1903,7 +1903,7 @@
 
   .includes__screen {
     border-radius: 28px;
-    aspect-ratio: 603 / 1311;
+    aspect-ratio: 603 / 1230;
   }
 
   .includes__notch {
@@ -3433,16 +3433,23 @@
   pointer-events: none;
 }
 
-.value-props__img {
+.value-props__device {
   position: relative;
   width: clamp(180px, 22vw, 245px);
+  padding: 9px;
+  border-radius: 42px;
+  background: linear-gradient(145deg, #2c2c2e 0%, #1c1c1e 40%, #3a3a3c 100%);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.12) inset,
+    0 24px 48px rgba(0, 0, 0, 0.18),
+    0 8px 16px rgba(0, 0, 0, 0.08);
+}
+
+.value-props__screen {
+  display: block;
+  width: 100%;
   height: auto;
-  /* The two tight dark shadows hug the phone's silhouette and mask the slightly
-     ragged cut-out edges of the PNG (they read as part of the dark bezel);
-     the big soft one is the actual floating shadow. */
-  filter: drop-shadow(0 0 1px rgba(15, 17, 21, 0.85))
-    drop-shadow(0 1px 2px rgba(15, 17, 21, 0.35))
-    drop-shadow(0 24px 48px rgba(0, 0, 0, 0.16));
+  border-radius: 33px;
 }
 
 .value-props__copy {
@@ -3475,7 +3482,7 @@
     gap: var(--space-lg);
   }
 
-  .value-props__img {
+  .value-props__device {
     width: min(46vw, 230px);
   }
 
@@ -5044,5 +5051,73 @@
   .support-article__toc-link:hover,
   .support-article__toc-link:focus-visible {
     color: var(--color-text);
+  }
+}
+
+/* Mobile hamburger nav — links collapse behind a hamburger next to Login / Sign up;
+   tapping it reveals the primary links stacked vertically under the bar. */
+.nav__hamburger,
+.nav__mobile-menu {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .nav__center-slot {
+    display: none;
+  }
+
+  .nav__hamburger {
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    width: 40px;
+    height: 40px;
+    margin-left: 0.25rem;
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .nav__hamburger span {
+    display: block;
+    width: 20px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--color-text);
+    transition: transform 0.25s ease, opacity 0.2s ease;
+  }
+
+  .nav--menu-open .nav__hamburger span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .nav--menu-open .nav__hamburger span:nth-child(2) {
+    opacity: 0;
+  }
+  .nav--menu-open .nav__hamburger span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .nav--menu-open .nav__mobile-menu {
+    display: block;
+    width: 100%;
+    padding: 0.25rem 1.25rem 0.9rem;
+  }
+
+  .nav__mobile-link {
+    display: block;
+    padding: 0.85rem 0.15rem;
+    font-size: 1.02rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--color-text);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .nav__mobile-link:last-child {
+    border-bottom: 0;
   }
 }

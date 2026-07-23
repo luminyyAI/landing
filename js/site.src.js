@@ -456,6 +456,33 @@ function initAuthLinks() {
   if (signup) signup.href = SIGNUP_URL;
 }
 
+/* ---------------------------------------------------- mobile hamburger */
+
+/** Mobile: primary links hide behind the hamburger next to Login / Sign up. */
+function initMobileMenu() {
+  const header = document.querySelector('header.nav');
+  const btn = document.querySelector('.nav__hamburger');
+  const menu = document.getElementById('mobile-menu');
+  if (!header || !btn || !menu) return;
+
+  const setOpen = (open) => {
+    header.classList.toggle('nav--menu-open', open);
+    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  };
+
+  btn.addEventListener('click', () => setOpen(!header.classList.contains('nav--menu-open')));
+  // Any link tap closes the menu (same-page anchors don't reload the page).
+  menu.addEventListener('click', (event) => {
+    if (event.target.closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') setOpen(false);
+  });
+  document.addEventListener('click', (event) => {
+    if (!header.contains(event.target)) setOpen(false);
+  });
+}
+
 /* ---------------------------------------------------- why-free dialog */
 
 const WHY_FREE_PARAGRAPHS = [
@@ -541,6 +568,7 @@ function initWhyFreeDialog() {
 
 function boot() {
   initAuthLinks();
+  initMobileMenu();
   initScrollAmbient();
   initNavHeightVar();
   initNavbarAppearance();
