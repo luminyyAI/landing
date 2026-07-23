@@ -574,31 +574,31 @@ function initWhyChooseWaves() {
   const tiles = document.querySelectorAll('.why-choose-luminy__card-icon');
   if (!tiles.length) return;
 
-  const AURORA = ['#4d99ff', '#7cb5ff', '#2f7ef7', '#a8ccff'];
-  const BASE = ['#2563eb', '#3b82f6', '#60a5fa'];
-  const HIGHLIGHT = '#dbeafe';
+  const AURORA = ['#9cc6ff', '#e2eeff', '#6faeff', '#c7defe'];
+  const BASE = ['#5a9dff', '#7cb5ff', '#a8ccff'];
+  const HIGHLIGHT = '#ffffff';
 
   const cp = (x, y, ax, ay, fx, fy, px, py) => ({ x, y, ax, ay, fx, fy, px, py });
   const LINES = [
     {
-      pts: [cp(-0.10, 0.62, 0.012, 0.060, 0.11, 0.15, 0.4, 2.9),
-            cp(0.30, 0.46, 0.020, 0.090, 0.08, 0.12, 1.8, 0.7),
-            cp(0.62, 0.66, 0.022, 0.100, 0.15, 0.08, 4.9, 0.8),
-            cp(1.10, 0.50, 0.012, 0.060, 0.13, 0.10, 3.4, 5.6)],
-      width: 1.6, alpha: 0.85, aurora: 0.75, seed: 53, speed: 1.0,
+      pts: [cp(-0.10, 0.60, 0.020, 0.110, 0.11, 0.15, 0.4, 2.9),
+            cp(0.30, 0.40, 0.034, 0.160, 0.08, 0.12, 1.8, 0.7),
+            cp(0.62, 0.66, 0.038, 0.180, 0.15, 0.08, 4.9, 0.8),
+            cp(1.10, 0.46, 0.020, 0.110, 0.13, 0.10, 3.4, 5.6)],
+      width: 2.1, alpha: 0.95, aurora: 0.8, seed: 53, speed: 1.0,
     },
     {
-      pts: [cp(-0.06, 0.80, 0.010, 0.055, 0.09, 0.13, 2.6, 5.0),
-            cp(0.38, 0.90, 0.016, 0.075, 0.12, 0.09, 0.9, 4.4),
-            cp(0.72, 0.72, 0.018, 0.085, 0.10, 0.16, 3.6, 2.0),
-            cp(1.08, 0.86, 0.010, 0.055, 0.11, 0.14, 2.2, 1.1)],
-      width: 1.3, alpha: 0.7, aurora: 0.5, seed: 37, speed: 0.85,
+      pts: [cp(-0.06, 0.80, 0.018, 0.100, 0.09, 0.13, 2.6, 5.0),
+            cp(0.38, 0.92, 0.028, 0.130, 0.12, 0.09, 0.9, 4.4),
+            cp(0.72, 0.68, 0.032, 0.150, 0.10, 0.16, 3.6, 2.0),
+            cp(1.08, 0.86, 0.018, 0.100, 0.11, 0.14, 2.2, 1.1)],
+      width: 1.6, alpha: 0.8, aurora: 0.55, seed: 37, speed: 0.85,
     },
     {
-      pts: [cp(-0.05, 0.50, 0.014, 0.065, 0.16, 0.21, 0.2, 3.8),
-            cp(0.45, 0.62, 0.020, 0.095, 0.19, 0.14, 2.2, 1.1),
-            cp(1.08, 0.54, 0.012, 0.060, 0.17, 0.12, 1.4, 0.3)],
-      width: 1.0, alpha: 0.55, aurora: 1.0, seed: 23, speed: 1.25,
+      pts: [cp(-0.05, 0.44, 0.024, 0.120, 0.16, 0.21, 0.2, 3.8),
+            cp(0.45, 0.60, 0.036, 0.170, 0.19, 0.14, 2.2, 1.1),
+            cp(1.08, 0.48, 0.022, 0.110, 0.17, 0.12, 1.4, 0.3)],
+      width: 1.2, alpha: 0.65, aurora: 1.0, seed: 23, speed: 1.3,
     },
   ];
 
@@ -627,7 +627,7 @@ function initWhyChooseWaves() {
 
   function drawFrame(ctx, w, h, t) {
     ctx.clearRect(0, 0, w, h);
-    const TEMPO = 2.2;
+    const TEMPO = 4.4;
     for (const spec of LINES) {
       const ts = t * TEMPO * spec.speed;
       const cps = spec.pts.map((p) => ({
@@ -659,7 +659,10 @@ function initWhyChooseWaves() {
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
       ctx.strokeStyle = grad;
+      ctx.shadowColor = 'rgba(140, 190, 255, 0.85)';
+      ctx.shadowBlur = 5;
       ctx.stroke(path);
+      ctx.shadowBlur = 0;
 
       const hlPos = 0.5 + 0.5 * Math.sin(ts * 0.17 + spec.seed * 1.3);
       const hl = ctx.createLinearGradient(a0.x, a0.y, a1.x, a1.y);

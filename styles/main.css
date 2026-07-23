@@ -3922,11 +3922,21 @@
   }
 }
 
-/* All four tiles share the exact brand palette — the logo's blue (#4d99ff)
-   over black glass — instead of per-card hue shifts. */
-.why-choose-luminy__card {
+/* Two alternating tile types built from the logo's two colors:
+   odd tiles = light brand-blue glass, even tiles = black glass with a blue
+   crown — so the row reads blue, black, blue, black. */
+.why-choose-luminy__card:nth-child(odd) {
+  --wcl-mid: #8ec1ff;
+  --wcl-deep: #2e6fe0;
+  --wcl-black: #1e4fae;
+  --wcl-glow: rgba(120, 178, 255, 0.5);
+}
+
+.why-choose-luminy__card:nth-child(even) {
   --wcl-mid: #4d99ff;
-  --wcl-glow: rgba(77, 153, 255, 0.38);
+  --wcl-deep: #131f3a;
+  --wcl-black: #080d18;
+  --wcl-glow: rgba(77, 153, 255, 0.42);
 }
 
 /* Liquid-glass tile: black→blue glass gradient, specular top light,
@@ -3959,8 +3969,8 @@
     linear-gradient(
       148deg,
       var(--wcl-mid, #2563eb) -12%,
-      #0b1226 56%,
-      #05070d 100%
+      var(--wcl-deep, #0b1226) 56%,
+      var(--wcl-black, #05070d) 100%
     );
   background-size:
     240% 100%,
