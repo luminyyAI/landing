@@ -896,7 +896,8 @@
      page so content never slides underneath it. */
   .nav,
   .nav.nav--scrolled {
-    position: static;
+    /* Relative (not static) so the mobile dropdown can anchor to the bar. */
+    position: relative;
     background: transparent;
     box-shadow: none;
     backdrop-filter: none;
@@ -1025,7 +1026,10 @@
 @media (max-width: 900px) {
   .hero {
     min-height: auto;
-    padding-block: clamp(1rem, 3vw, 1.5rem) clamp(2.5rem, 6vw, 3.5rem);
+    /* No negative tuck under the bar on mobile + extra top padding so the
+       "Meet Luminy" headline breathes below the navbar. */
+    margin-top: 0;
+    padding-block: clamp(2rem, 6vw, 3rem) clamp(2.5rem, 6vw, 3.5rem);
   }
 }
 
@@ -1137,7 +1141,7 @@
 
 @media (min-width: 900px) {
   .hero__grid {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
     gap: clamp(1.75rem, 2.5vw, 2.75rem);
   }
 }
@@ -5135,7 +5139,8 @@
 }
 
 /* Mobile hamburger nav — links collapse behind a hamburger next to Login / Sign up;
-   tapping it reveals the primary links stacked vertically under the bar. */
+   tapping it reveals a dropdown panel anchored under the bar (absolute, so the
+   bar itself never reflows or moves when the menu opens). */
 .nav__hamburger,
 .nav__mobile-menu {
   display: none;
@@ -5151,40 +5156,93 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 5px;
+    gap: 4.5px;
     width: 40px;
     height: 40px;
     margin-left: 0.25rem;
     padding: 0;
-    background: none;
+    background: transparent;
     border: 0;
-    border-radius: 10px;
+    border-radius: 12px;
     cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: background 0.2s ease;
+  }
+
+  .nav__hamburger:active,
+  .nav--menu-open .nav__hamburger {
+    background: rgba(15, 23, 42, 0.06);
   }
 
   .nav__hamburger span {
     display: block;
-    width: 20px;
+    width: 18px;
     height: 2px;
     border-radius: 2px;
     background: var(--color-text);
-    transition: transform 0.25s ease, opacity 0.2s ease;
+    transition:
+      transform 0.3s cubic-bezier(0.33, 1, 0.68, 1),
+      opacity 0.2s ease;
   }
 
   .nav--menu-open .nav__hamburger span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
+    transform: translateY(6.5px) rotate(45deg);
   }
   .nav--menu-open .nav__hamburger span:nth-child(2) {
     opacity: 0;
+    transform: scaleX(0.4);
   }
   .nav--menu-open .nav__hamburger span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+
+  /* While the menu is open the bar frosts to match the dropdown, so the
+     two read as a single surface. */
+  .nav.nav--menu-open {
+    background: rgba(251, 251, 253, 0.92);
+    backdrop-filter: saturate(180%) blur(22px);
+    -webkit-backdrop-filter: saturate(180%) blur(22px);
+  }
+
+  /* Dropdown panel — always in the layer tree so open/close can animate;
+     hidden via opacity/visibility, never display, and absolutely positioned
+     so the bar above it stays perfectly still. */
+  .nav__mobile-menu {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 1200;
+    padding: 0.35rem 1.25rem 0.75rem;
+    background:
+      linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(255, 255, 255, 0) 60%),
+      rgba(251, 251, 253, 0.92);
+    backdrop-filter: saturate(180%) blur(22px);
+    -webkit-backdrop-filter: saturate(180%) blur(22px);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow:
+      0 4px 12px rgba(15, 23, 42, 0.05),
+      0 16px 40px rgba(15, 23, 42, 0.1);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition:
+      opacity 0.28s cubic-bezier(0.33, 1, 0.68, 1),
+      transform 0.28s cubic-bezier(0.33, 1, 0.68, 1),
+      visibility 0s linear 0.28s;
   }
 
   .nav--menu-open .nav__mobile-menu {
-    display: block;
-    width: 100%;
-    padding: 0.25rem 1.25rem 0.9rem;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transform: translateY(0);
+    transition:
+      opacity 0.32s cubic-bezier(0.33, 1, 0.68, 1),
+      transform 0.32s cubic-bezier(0.33, 1, 0.68, 1),
+      visibility 0s;
   }
 
   .nav__mobile-link {
@@ -5199,5 +5257,13 @@
 
   .nav__mobile-link:last-child {
     border-bottom: 0;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav__mobile-menu,
+    .nav--menu-open .nav__mobile-menu,
+    .nav__hamburger span {
+      transition: none;
+    }
   }
 }
