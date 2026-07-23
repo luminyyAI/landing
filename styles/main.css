@@ -3829,37 +3829,54 @@
   border: 1px solid rgba(15, 23, 42, 0.06);
   border-radius: 26px;
   box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+  transition:
+    transform 0.45s cubic-bezier(0.33, 1, 0.68, 1),
+    box-shadow 0.45s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-/* Per-card icon palette (blue / violet / teal / amber). */
+.why-choose-luminy__card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 26px 60px rgba(15, 23, 42, 0.12);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why-choose-luminy__card {
+    transition: none;
+  }
+
+  .why-choose-luminy__card:hover {
+    transform: none;
+  }
+}
+
+/* Per-card blue accent — all tiles share the blue-and-black liquid-glass
+   look; each card just shifts the blue hue (royal / indigo / sky / cobalt). */
 .why-choose-luminy__card:nth-child(1) {
-  --wcl-icon: #2563eb;
-  --wcl-tile-bg: linear-gradient(180deg, #eef5ff 0%, #e7f0ff 100%);
-  --wcl-tile-border: rgba(37, 99, 235, 0.14);
-  --wcl-wave: rgba(37, 99, 235, 0.16);
+  --wcl-mid: #2563eb;
+  --wcl-wave: rgba(96, 165, 250, 0.4);
+  --wcl-glow: rgba(59, 130, 246, 0.38);
 }
 
 .why-choose-luminy__card:nth-child(2) {
-  --wcl-icon: #7c3aed;
-  --wcl-tile-bg: linear-gradient(180deg, #f5f0ff 0%, #eee6ff 100%);
-  --wcl-tile-border: rgba(124, 58, 237, 0.14);
-  --wcl-wave: rgba(124, 58, 237, 0.15);
+  --wcl-mid: #4f46e5;
+  --wcl-wave: rgba(129, 140, 248, 0.38);
+  --wcl-glow: rgba(99, 102, 241, 0.36);
 }
 
 .why-choose-luminy__card:nth-child(3) {
-  --wcl-icon: #0d9488;
-  --wcl-tile-bg: linear-gradient(180deg, #ecfaf7 0%, #e0f5f0 100%);
-  --wcl-tile-border: rgba(13, 148, 136, 0.16);
-  --wcl-wave: rgba(13, 148, 136, 0.15);
+  --wcl-mid: #0284c7;
+  --wcl-wave: rgba(56, 189, 248, 0.38);
+  --wcl-glow: rgba(14, 165, 233, 0.36);
 }
 
 .why-choose-luminy__card:nth-child(4) {
-  --wcl-icon: #d97706;
-  --wcl-tile-bg: linear-gradient(180deg, #fff6ea 0%, #ffefdb 100%);
-  --wcl-tile-border: rgba(217, 119, 6, 0.16);
-  --wcl-wave: rgba(217, 119, 6, 0.15);
+  --wcl-mid: #1e40af;
+  --wcl-wave: rgba(147, 197, 253, 0.36);
+  --wcl-glow: rgba(37, 99, 235, 0.38);
 }
 
+/* Liquid-glass tile: black→blue glass gradient, specular top light,
+   inner blue bloom, and a periodic sheen sweeping across the surface. */
 .why-choose-luminy__card-icon {
   position: relative;
   overflow: hidden;
@@ -3867,17 +3884,69 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 52px;
-  height: 52px;
+  width: 54px;
+  height: 54px;
   margin-bottom: 22px;
-  border-radius: 16px;
-  background: var(--wcl-tile-bg, linear-gradient(180deg, #eef5ff 0%, #e7f0ff 100%));
-  border: 1px solid var(--wcl-tile-border, rgba(37, 99, 235, 0.12));
-  color: var(--wcl-icon, var(--color-accent));
+  border-radius: 17px;
+  color: #eaf2ff;
+  background:
+    linear-gradient(
+      115deg,
+      transparent 32%,
+      rgba(255, 255, 255, 0.38) 45%,
+      rgba(255, 255, 255, 0.1) 52%,
+      transparent 60%
+    ),
+    radial-gradient(
+      120% 90% at 22% 0%,
+      rgba(255, 255, 255, 0.3) 0%,
+      rgba(255, 255, 255, 0) 46%
+    ),
+    linear-gradient(
+      148deg,
+      var(--wcl-mid, #2563eb) -12%,
+      #0b1226 56%,
+      #05070d 100%
+    );
+  background-size:
+    240% 100%,
+    100% 100%,
+    100% 100%;
+  background-position:
+    -140% 0,
+    0 0,
+    0 0;
+  border: 1px solid rgba(148, 197, 255, 0.32);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    inset 0 -10px 18px var(--wcl-glow, rgba(59, 130, 246, 0.38)),
+    0 10px 24px rgba(5, 10, 24, 0.32),
+    0 3px 10px var(--wcl-glow, rgba(59, 130, 246, 0.38));
+  animation: wcl-sheen 6s ease-in-out infinite;
+  transition:
+    transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
+    box-shadow 0.45s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+@keyframes wcl-sheen {
+  0%,
+  58% {
+    background-position:
+      -140% 0,
+      0 0,
+      0 0;
+  }
+  100% {
+    background-position:
+      240% 0,
+      0 0,
+      0 0;
+  }
 }
 
 /* Animated waves: two oversized rounded squares spinning at different
-   speeds — their curved top edges read as a rolling waterline. */
+   speeds — their curved top edges read as a rolling waterline. On hover
+   the liquid rises up the glass. */
 .why-choose-luminy__card-icon::before,
 .why-choose-luminy__card-icon::after {
   content: "";
@@ -3888,8 +3957,9 @@
   aspect-ratio: 1;
   margin-left: -100%;
   border-radius: 42%;
-  background: var(--wcl-wave, rgba(37, 99, 235, 0.16));
+  background: var(--wcl-wave, rgba(96, 165, 250, 0.4));
   animation: wcl-wave 9s linear infinite;
+  transition: top 0.7s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
 .why-choose-luminy__card-icon::after {
@@ -3906,18 +3976,49 @@
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .why-choose-luminy__card-icon::before,
-  .why-choose-luminy__card-icon::after {
-    animation: none;
-  }
-}
-
 .why-choose-luminy__card-icon svg {
   position: relative;
   z-index: 1;
   width: 24px;
   height: 24px;
+  filter: drop-shadow(0 0 7px var(--wcl-glow, rgba(59, 130, 246, 0.38)));
+  transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Hover: tile lifts with a springy tilt, glow deepens, liquid rises,
+   icon pops slightly. */
+.why-choose-luminy__card:hover .why-choose-luminy__card-icon {
+  transform: translateY(-3px) scale(1.06) rotate(-2deg);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    inset 0 -12px 22px var(--wcl-glow, rgba(59, 130, 246, 0.38)),
+    0 14px 30px rgba(5, 10, 24, 0.36),
+    0 5px 18px var(--wcl-glow, rgba(59, 130, 246, 0.38));
+}
+
+.why-choose-luminy__card:hover .why-choose-luminy__card-icon::before {
+  top: 44%;
+}
+
+.why-choose-luminy__card:hover .why-choose-luminy__card-icon::after {
+  top: 52%;
+}
+
+.why-choose-luminy__card:hover .why-choose-luminy__card-icon svg {
+  transform: scale(1.1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why-choose-luminy__card-icon,
+  .why-choose-luminy__card-icon::before,
+  .why-choose-luminy__card-icon::after {
+    animation: none;
+    transition: none;
+  }
+
+  .why-choose-luminy__card-icon svg {
+    transition: none;
+  }
 }
 
 .why-choose-luminy__card-title {
