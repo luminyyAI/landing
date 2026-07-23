@@ -675,9 +675,7 @@
     border-radius: 12px;
     color: #fff;
     background: linear-gradient(160deg, #3b82f6 0%, #2563eb 55%, #1d4ed8 100%);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.3),
-      0 6px 16px rgba(37, 99, 235, 0.28);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.3);
     transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
 
@@ -5616,7 +5614,7 @@
   }
 }
 
-/* Changelog (blog page) — timeline of release-note cards */
+/* Changelog (blog page) — timeline layout: meta rail left, prose right */
 .changelog-tabs {
   display: inline-flex;
   gap: 4px;
@@ -5653,49 +5651,51 @@
 
 .changelog {
   flex: 1;
-  max-width: 860px;
+  max-width: 980px;
   padding-bottom: var(--space-2xl);
 }
 
 .changelog-entry {
   display: grid;
-  grid-template-columns: 150px minmax(0, 1fr);
-  gap: clamp(1rem, 3vw, 2rem);
-  padding-block: clamp(1.5rem, 4vw, 2.5rem);
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem);
+  padding-block: clamp(2rem, 5vw, 3.5rem);
 }
 
 .changelog-entry + .changelog-entry {
   border-top: 1px solid rgba(15, 23, 42, 0.07);
 }
 
+/* Timeline dot next to the date */
 .changelog-entry__meta {
-  padding-top: 30px;
-  font-size: 0.9rem;
+  position: relative;
+  padding-left: 22px;
+}
+
+.changelog-entry__meta::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.42em;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  box-shadow: 0 0 0 4px rgba(0, 113, 227, 0.12);
+}
+
+.changelog-entry__date {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 0.92rem;
   font-weight: 500;
   color: var(--color-text-muted);
-  white-space: nowrap;
-}
-
-.changelog-entry__card {
-  padding: clamp(1.5rem, 3vw, 2rem) clamp(1.5rem, 3vw, 2.25rem);
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(15, 23, 42, 0.06);
-  border-radius: 22px;
-  box-shadow: 0 14px 40px rgba(15, 23, 42, 0.06);
-}
-
-.changelog-entry__head {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-bottom: 12px;
 }
 
 .changelog-entry__title {
-  margin: 0;
+  margin: 0 0 12px;
   font-family: var(--font-display);
-  font-size: clamp(1.35rem, 3vw, 1.7rem);
+  font-size: clamp(1.4rem, 3vw, 1.8rem);
   font-weight: 600;
   letter-spacing: -0.025em;
   line-height: 1.15;
@@ -5705,12 +5705,21 @@
 .changelog-badge {
   display: inline-flex;
   align-items: center;
+  gap: 6px;
   padding: 4px 12px;
   border-radius: 999px;
   font-size: 0.76rem;
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
+}
+
+.changelog-badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
 }
 
 .changelog-badge--feature {
@@ -5737,72 +5746,72 @@
   border: 1px solid rgba(13, 148, 136, 0.2);
 }
 
-.changelog-entry__summary {
+.changelog-entry__content p {
   margin: 0 0 var(--space-md);
   font-size: 1.02rem;
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--color-text);
 }
 
-.changelog-entry__subhead {
-  margin: var(--space-md) 0 8px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
+.changelog-entry__content p:last-child {
+  margin-bottom: 0;
 }
 
-.changelog-entry__list {
-  margin: 0;
-  padding-left: 1.2rem;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 0.97rem;
-  line-height: 1.55;
-  color: var(--color-text-muted);
-}
-
-.changelog-entry__list li::marker {
+.changelog-entry__cta-inline {
   color: var(--color-accent);
-}
-
-.changelog-entry__media {
-  margin: var(--space-md) 0 0;
-  border-radius: 14px;
-  overflow: hidden;
-  border: 1px solid var(--color-border);
-}
-
-.changelog-entry__media img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.changelog-entry__cta {
-  display: inline-block;
-  margin-top: var(--space-md);
-  font-size: 0.95rem;
   font-weight: 600;
-  color: var(--color-accent);
   text-decoration: none;
 }
 
-.changelog-entry__cta:hover {
+.changelog-entry__cta-inline:hover {
   color: var(--color-accent-hover);
   text-decoration: underline;
   text-underline-offset: 3px;
 }
 
-@media (max-width: 720px) {
+/* Brand media block: blue gradient panel with the breathing logo */
+.changelog-entry__media--brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 0 var(--space-md);
+  aspect-ratio: 16 / 9;
+  border-radius: 18px;
+  background:
+    radial-gradient(90% 120% at 30% 20%, rgba(255, 255, 255, 0.28) 0%, transparent 55%),
+    linear-gradient(150deg, #8fb1f8 0%, #6494f5 48%, #3d6ce0 100%);
+  border: 1px solid rgba(37, 99, 235, 0.18);
+  overflow: hidden;
+}
+
+.changelog-entry__logo {
+  width: clamp(72px, 18%, 110px);
+  height: auto;
+  animation: changelog-breathe 3.2s ease-in-out infinite;
+  filter: drop-shadow(0 10px 24px rgba(13, 30, 70, 0.3));
+}
+
+@keyframes changelog-breathe {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 0.92;
+  }
+  50% {
+    transform: scale(1.16);
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .changelog-entry__logo {
+    animation: none;
+  }
+}
+
+@media (max-width: 760px) {
   .changelog-entry {
     grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .changelog-entry__meta {
-    padding-top: 0;
+    gap: 1.25rem;
   }
 }
