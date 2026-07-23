@@ -5974,34 +5974,82 @@
    ========================================================================== */
 
 .fb {
-  /* Palette mirrors the Luminy app's dark theme (iOS DesignSystem.swift).
-     Keep these in sync with Color.bgDeep / cardSurface / accentIndigo / etc. */
-  --fb-bg: #0b1220;          /* bgDeep / pageTop */
-  --fb-bg-2: #0e1626;        /* pageBottom */
-  --fb-card: #16213a;        /* cardSurface / bgElevated */
-  --fb-card-2: #111a2c;      /* bgMid */
-  --fb-line: rgba(255, 255, 255, 0.12);        /* cardBorder */
-  --fb-line-strong: rgba(255, 255, 255, 0.18);
-  --fb-fill: rgba(255, 255, 255, 0.08);        /* chipFill */
-  --fb-text: #e6ecf5;        /* textMain */
-  --fb-muted: #9aa8bd;       /* textMuted */
-  --fb-dim: #7a89a0;         /* textDim */
-  --fb-green: #34d399;       /* accentGreen */
-  --fb-red: #f87171;         /* dangerRed */
-  --fb-blue: #3b82f6;        /* accentIndigo */
-  --fb-brand: #6097fc;       /* brandBlue */
-  --fb-amber: #f29820;       /* category · dining */
-  --fb-purple: #8b50e2;      /* category · entertainment */
-  --fb-cyan: #2ab5df;        /* category · transport */
+  /* Palette mirrors the Luminy app (iOS DesignSystem.swift), which is
+     adaptive: light values by default, dark values under the dark-mode
+     override below. Keep in sync with Color.bgDeep / cardSurface /
+     accentIndigo / textMain / etc. */
+  --fb-bg: #f8fafc;          /* bgDeep */
+  --fb-bg-2: #f7fafe;        /* pageBottom */
+  --fb-card: #ffffff;        /* cardSurface / bgElevated */
+  --fb-card-2: #f1f5f9;      /* bgMid */
+  --fb-line: rgba(148, 163, 184, 0.24);        /* cardBorder */
+  --fb-line-strong: rgba(148, 163, 184, 0.36);
+  --fb-fill: rgba(15, 23, 42, 0.04);           /* chipFill */
+  --fb-row-line: rgba(15, 23, 42, 0.08);
+  --fb-text: #0f172a;        /* textMain */
+  --fb-muted: #475569;       /* textMuted */
+  --fb-dim: #64748b;         /* textDim */
+  --fb-green: #059669;       /* accentGreen */
+  --fb-red: #dc2626;         /* dangerRed */
+  --fb-blue: #2563eb;        /* accentIndigo */
+  --fb-brand: #6097fc;       /* brandBlue (fixed in both modes) */
+  --fb-amber: #d97706;       /* category · dining */
+  --fb-purple: #7c3aed;      /* category · entertainment */
+  --fb-cyan: #0891b2;        /* category · transport */
+  /* Chip / status label colors: readable on their own tinted backgrounds. */
+  --fb-chip-ent: #6d28d9;
+  --fb-chip-gro: #047857;
+  --fb-chip-din: #b45309;
+  --fb-chip-cof: #92400e;
+  --fb-chip-trn: #0e7490;
+  --fb-ok: #047857;
+  --fb-warn: #b45309;
+  --fb-card-shadow: 0 18px 44px rgba(15, 23, 42, 0.1);
 
   position: relative;
   margin-block: 0;
   padding-block: clamp(3rem, 7vw, 5.5rem);
   background:
-    radial-gradient(120% 80% at 15% 0%, rgba(59, 130, 246, 0.22) 0%, transparent 55%),
-    radial-gradient(100% 70% at 90% 10%, rgba(96, 151, 252, 0.14) 0%, transparent 50%),
+    radial-gradient(120% 80% at 15% 0%, rgba(37, 99, 235, 0.1) 0%, transparent 55%),
+    radial-gradient(100% 70% at 90% 10%, rgba(96, 151, 252, 0.1) 0%, transparent 50%),
     linear-gradient(180deg, var(--fb-bg) 0%, var(--fb-bg-2) 100%);
   color: var(--fb-text);
+}
+
+/* Dark mode: the app's dark tokens, one-for-one. */
+@media (prefers-color-scheme: dark) {
+  .fb {
+    --fb-bg: #0b1220;        /* bgDeep / pageTop */
+    --fb-bg-2: #0e1626;      /* pageBottom */
+    --fb-card: #16213a;      /* cardSurface / bgElevated */
+    --fb-card-2: #111a2c;    /* bgMid */
+    --fb-line: rgba(255, 255, 255, 0.12);      /* cardBorder */
+    --fb-line-strong: rgba(255, 255, 255, 0.18);
+    --fb-fill: rgba(255, 255, 255, 0.08);      /* chipFill */
+    --fb-row-line: rgba(255, 255, 255, 0.07);
+    --fb-text: #e6ecf5;      /* textMain */
+    --fb-muted: #9aa8bd;     /* textMuted */
+    --fb-dim: #7a89a0;       /* textDim */
+    --fb-green: #34d399;     /* accentGreen */
+    --fb-red: #f87171;       /* dangerRed */
+    --fb-blue: #3b82f6;      /* accentIndigo */
+    --fb-amber: #f29820;
+    --fb-purple: #8b50e2;
+    --fb-cyan: #2ab5df;
+    --fb-chip-ent: #c9a4f5;
+    --fb-chip-gro: #6ee7b7;
+    --fb-chip-din: #f6b86a;
+    --fb-chip-cof: #f0c9a0;
+    --fb-chip-trn: #7fd4ec;
+    --fb-ok: #6ee7b7;
+    --fb-warn: #f6b86a;
+    --fb-card-shadow: 0 18px 48px rgba(11, 18, 32, 0.55);
+
+    background:
+      radial-gradient(120% 80% at 15% 0%, rgba(59, 130, 246, 0.22) 0%, transparent 55%),
+      radial-gradient(100% 70% at 90% 10%, rgba(96, 151, 252, 0.14) 0%, transparent 50%),
+      linear-gradient(180deg, var(--fb-bg) 0%, var(--fb-bg-2) 100%);
+  }
 }
 
 .fb__container {
@@ -6088,7 +6136,7 @@
   border: 1px solid var(--fb-line);
   border-radius: 22px;
   background: var(--fb-card);
-  box-shadow: 0 18px 48px rgba(11, 18, 32, 0.55);
+  box-shadow: var(--fb-card-shadow);
 }
 
 /* Side-by-side copy + mockup on the two-column cards, so the mockup can be
@@ -6208,7 +6256,7 @@
   justify-content: space-between;
   gap: 0.75rem;
   padding: 0.5rem 0;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-bottom: 1px solid var(--fb-row-line);
   white-space: nowrap;
 }
 
@@ -6265,23 +6313,23 @@
 }
 
 .fb-chip--ent {
-  color: #c9a4f5;
+  color: var(--fb-chip-ent);
   background: rgba(139, 80, 226, 0.18);
 }
 .fb-chip--gro {
-  color: #6ee7b7;
+  color: var(--fb-chip-gro);
   background: rgba(52, 211, 153, 0.16);
 }
 .fb-chip--din {
-  color: #f6b86a;
+  color: var(--fb-chip-din);
   background: rgba(242, 152, 32, 0.18);
 }
 .fb-chip--cof {
-  color: #f0c9a0;
+  color: var(--fb-chip-cof);
   background: rgba(180, 110, 40, 0.2);
 }
 .fb-chip--trn {
-  color: #7fd4ec;
+  color: var(--fb-chip-trn);
   background: rgba(42, 181, 223, 0.16);
 }
 
@@ -6469,12 +6517,12 @@
 }
 
 .fb-status--ok {
-  color: #6ee7b7;
+  color: var(--fb-ok);
   background: rgba(52, 211, 153, 0.14);
 }
 
 .fb-status--warn {
-  color: #f6b86a;
+  color: var(--fb-warn);
   background: rgba(242, 152, 32, 0.16);
 }
 
@@ -6487,7 +6535,7 @@
   border-radius: 12px;
   border: 1px solid rgba(242, 152, 32, 0.32);
   background: rgba(242, 152, 32, 0.1);
-  color: #f6b86a;
+  color: var(--fb-warn);
   font-size: 0.85rem;
   font-weight: 500;
 }
