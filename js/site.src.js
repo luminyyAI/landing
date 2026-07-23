@@ -564,9 +564,166 @@ function initWhyFreeDialog() {
   });
 }
 
+/* ------------------------------------------------ why-choose icon waves */
+/* Port of the onboarding aurora waves (shared/promo-waves.js in the app):
+   Catmull-Rom splines whose control points orbit on independent sine tracks,
+   stroked with a drifting gradient + traveling highlight. Trimmed to three
+   horizontal lines and recolored to the brand blue/black family so the tiny
+   54px icon tiles read as liquid brand-blue light, not a full aurora field. */
+function initWhyChooseWaves() {
+  const tiles = document.querySelectorAll('.why-choose-luminy__card-icon');
+  if (!tiles.length) return;
+
+  const AURORA = ['#4d99ff', '#7cb5ff', '#2f7ef7', '#a8ccff'];
+  const BASE = ['#2563eb', '#3b82f6', '#60a5fa'];
+  const HIGHLIGHT = '#dbeafe';
+
+  const cp = (x, y, ax, ay, fx, fy, px, py) => ({ x, y, ax, ay, fx, fy, px, py });
+  const LINES = [
+    {
+      pts: [cp(-0.10, 0.62, 0.012, 0.060, 0.11, 0.15, 0.4, 2.9),
+            cp(0.30, 0.46, 0.020, 0.090, 0.08, 0.12, 1.8, 0.7),
+            cp(0.62, 0.66, 0.022, 0.100, 0.15, 0.08, 4.9, 0.8),
+            cp(1.10, 0.50, 0.012, 0.060, 0.13, 0.10, 3.4, 5.6)],
+      width: 1.6, alpha: 0.85, aurora: 0.75, seed: 53, speed: 1.0,
+    },
+    {
+      pts: [cp(-0.06, 0.80, 0.010, 0.055, 0.09, 0.13, 2.6, 5.0),
+            cp(0.38, 0.90, 0.016, 0.075, 0.12, 0.09, 0.9, 4.4),
+            cp(0.72, 0.72, 0.018, 0.085, 0.10, 0.16, 3.6, 2.0),
+            cp(1.08, 0.86, 0.010, 0.055, 0.11, 0.14, 2.2, 1.1)],
+      width: 1.3, alpha: 0.7, aurora: 0.5, seed: 37, speed: 0.85,
+    },
+    {
+      pts: [cp(-0.05, 0.50, 0.014, 0.065, 0.16, 0.21, 0.2, 3.8),
+            cp(0.45, 0.62, 0.020, 0.095, 0.19, 0.14, 2.2, 1.1),
+            cp(1.08, 0.54, 0.012, 0.060, 0.17, 0.12, 1.4, 0.3)],
+      width: 1.0, alpha: 0.55, aurora: 1.0, seed: 23, speed: 1.25,
+    },
+  ];
+
+  function catmullRom(pts, i, u) {
+    const p0 = pts[Math.max(i - 1, 0)], p1 = pts[i], p2 = pts[i + 1],
+      p3 = pts[Math.min(i + 2, pts.length - 1)];
+    const u2 = u * u, u3 = u2 * u;
+    const blend = (a, b, c, d) =>
+      0.5 * (2 * b + (-a + c) * u + (2 * a - 5 * b + 4 * c - d) * u2 +
+        (-a + 3 * b - 3 * c + d) * u3);
+    return { x: blend(p0.x, p1.x, p2.x, p3.x), y: blend(p0.y, p1.y, p2.y, p3.y) };
+  }
+
+  const hexToRgb = (hex) => {
+    const n = parseInt(hex.slice(1), 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  };
+  const rgba = (hex, a) => {
+    const c = hexToRgb(hex);
+    return `rgba(${c[0]},${c[1]},${c[2]},${a})`;
+  };
+  const mixHex = (hexA, hexB, t) => {
+    const a = hexToRgb(hexA), b = hexToRgb(hexB);
+    return a.map((v, i) => Math.round(v + (b[i] - v) * t));
+  };
+
+  function drawFrame(ctx, w, h, t) {
+    ctx.clearRect(0, 0, w, h);
+    const TEMPO = 2.2;
+    for (const spec of LINES) {
+      const ts = t * TEMPO * spec.speed;
+      const cps = spec.pts.map((p) => ({
+        x: (p.x + p.ax * Math.sin(p.fx * ts + p.px)) * w,
+        y: (p.y + p.ay * Math.sin(p.fy * ts + p.py)) * h,
+      }));
+
+      const segs = cps.length - 1, perSeg = 12;
+      const path = new Path2D();
+      const first = catmullRom(cps, 0, 0);
+      path.moveTo(first.x, first.y);
+      for (let n = 1; n <= segs * perSeg; n++) {
+        const i = Math.min(Math.floor(n / perSeg), segs - 1);
+        const pt = catmullRom(cps, i, (n - i * perSeg) / perSeg);
+        path.lineTo(pt.x, pt.y);
+      }
+
+      const a0 = cps[0], a1 = cps[cps.length - 1];
+      const grad = ctx.createLinearGradient(a0.x, a0.y, a1.x, a1.y);
+      const drift = 0.5 + 0.5 * Math.sin(ts * 0.13 + spec.seed);
+      for (let s = 0; s <= 4; s++) {
+        const auroraColor = AURORA[(s + Math.floor(drift * AURORA.length)) % AURORA.length];
+        const c = mixHex(BASE[s % BASE.length], auroraColor, spec.aurora);
+        const stopAlpha = Math.max(
+          spec.alpha * (0.65 + 0.35 * Math.sin(ts * 0.21 + spec.seed + s * 1.7)), 0.15);
+        grad.addColorStop(s / 4, `rgba(${c[0]},${c[1]},${c[2]},${Math.min(stopAlpha, 1).toFixed(3)})`);
+      }
+      ctx.lineWidth = spec.width;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = grad;
+      ctx.stroke(path);
+
+      const hlPos = 0.5 + 0.5 * Math.sin(ts * 0.17 + spec.seed * 1.3);
+      const hl = ctx.createLinearGradient(a0.x, a0.y, a1.x, a1.y);
+      const band = 0.16;
+      const lo = Math.max(0, hlPos - band), hi = Math.min(1, hlPos + band);
+      hl.addColorStop(0, 'rgba(255,255,255,0)');
+      if (lo > 0) hl.addColorStop(lo, 'rgba(255,255,255,0)');
+      hl.addColorStop(Math.min(Math.max(hlPos, 0.001), 0.999), rgba(HIGHLIGHT, 0.55 * spec.alpha));
+      if (hi < 1) hl.addColorStop(hi, 'rgba(255,255,255,0)');
+      hl.addColorStop(1, 'rgba(255,255,255,0)');
+      ctx.lineWidth = spec.width + 0.6;
+      ctx.strokeStyle = hl;
+      ctx.stroke(path);
+    }
+  }
+
+  const reduceMotion =
+    window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  tiles.forEach((tile, idx) => {
+    const canvas = document.createElement('canvas');
+    canvas.className = 'why-choose-luminy__card-waves';
+    canvas.setAttribute('aria-hidden', 'true');
+    tile.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
+    if (!ctx) { canvas.remove(); return; }
+
+    let w = 0, h = 0;
+    const resize = () => {
+      const rect = tile.getBoundingClientRect();
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      w = Math.max(rect.width, 1);
+      h = Math.max(rect.height, 1);
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    resize();
+    if (typeof ResizeObserver !== 'undefined') new ResizeObserver(resize).observe(tile);
+    else window.addEventListener('resize', resize);
+
+    // Per-tile phase offset so the four tiles never move in sync.
+    const phase = 4.2 + idx * 2.7;
+    if (reduceMotion) {
+      drawFrame(ctx, w, h, phase);
+      return;
+    }
+    const start = performance.now();
+    let last = 0;
+    const frame = (now) => {
+      if (now - last >= 33 && tile.offsetParent !== null) {
+        last = now;
+        drawFrame(ctx, w, h, (now - start) / 1000 + phase);
+      }
+      requestAnimationFrame(frame);
+    };
+    requestAnimationFrame(frame);
+  });
+}
+
 /* ----------------------------------------------------------------- boot */
 
 function boot() {
+  initWhyChooseWaves();
   initAuthLinks();
   initMobileMenu();
   initScrollAmbient();

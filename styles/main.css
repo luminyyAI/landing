@@ -1285,23 +1285,47 @@
   }
 }
 
-/* iPhone app shot overlapping the dashboard's bottom-left corner. */
-.hero__phone-shot {
+/* iPhone app shot overlapping the dashboard's bottom-left corner,
+   dressed in a CSS device frame (dark bezel + Dynamic Island). */
+.hero__phone {
   display: none;
 }
 
 @media (min-width: 900px) {
-  .hero__phone-shot {
+  .hero__phone {
     display: block;
     position: absolute;
-    left: -4%;
-    bottom: -7%;
+    left: -3%;
+    bottom: -5%;
     z-index: 2;
-    width: clamp(110px, 21%, 190px);
+    width: clamp(90px, 15%, 150px);
+    padding: 5.5%;
+    box-sizing: border-box;
+    border-radius: 15% / 7.2%;
+    background: linear-gradient(180deg, #2a2c31 0%, #131417 55%, #26282d 100%);
+    box-shadow:
+      inset 0 0 0 2px rgba(255, 255, 255, 0.14),
+      0 18px 48px rgba(15, 23, 42, 0.28);
+  }
+
+  /* Dynamic Island */
+  .hero__phone::after {
+    content: '';
+    position: absolute;
+    top: 9.5%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30%;
+    height: 3.4%;
+    border-radius: 999px;
+    background: #000;
+  }
+
+  .hero__phone-shot {
+    display: block;
+    width: 100%;
     height: auto;
-    border-radius: 26px;
-    border: 1px solid var(--color-border);
-    box-shadow: 0 14px 44px rgba(0, 0, 0, 0.16);
+    border-radius: 11% / 5.3%;
   }
 }
 
@@ -3871,30 +3895,11 @@
   }
 }
 
-/* Per-card blue accent — all tiles share the blue-and-black liquid-glass
-   look; each card just shifts the blue hue (royal / indigo / sky / cobalt). */
-.why-choose-luminy__card:nth-child(1) {
-  --wcl-mid: #2563eb;
-  --wcl-wave: rgba(96, 165, 250, 0.4);
-  --wcl-glow: rgba(59, 130, 246, 0.38);
-}
-
-.why-choose-luminy__card:nth-child(2) {
-  --wcl-mid: #4f46e5;
-  --wcl-wave: rgba(129, 140, 248, 0.38);
-  --wcl-glow: rgba(99, 102, 241, 0.36);
-}
-
-.why-choose-luminy__card:nth-child(3) {
-  --wcl-mid: #0284c7;
-  --wcl-wave: rgba(56, 189, 248, 0.38);
-  --wcl-glow: rgba(14, 165, 233, 0.36);
-}
-
-.why-choose-luminy__card:nth-child(4) {
-  --wcl-mid: #1e40af;
-  --wcl-wave: rgba(147, 197, 253, 0.36);
-  --wcl-glow: rgba(37, 99, 235, 0.38);
+/* All four tiles share the exact brand palette — the logo's blue (#4d99ff)
+   over black glass — instead of per-card hue shifts. */
+.why-choose-luminy__card {
+  --wcl-mid: #4d99ff;
+  --wcl-glow: rgba(77, 153, 255, 0.38);
 }
 
 /* Liquid-glass tile: black→blue glass gradient, specular top light,
@@ -3966,36 +3971,15 @@
   }
 }
 
-/* Animated waves: two oversized rounded squares spinning at different
-   speeds — their curved top edges read as a rolling waterline. On hover
-   the liquid rises up the glass. */
-.why-choose-luminy__card-icon::before,
-.why-choose-luminy__card-icon::after {
-  content: "";
+/* Aurora waves (ported from the app's onboarding promo-waves): a canvas the
+   JS mounts inside each tile, drawing brand-blue splines behind the glyph. */
+.why-choose-luminy__card-waves {
   position: absolute;
-  left: 50%;
-  top: 58%;
-  width: 200%;
-  aspect-ratio: 1;
-  margin-left: -100%;
-  border-radius: 42%;
-  background: var(--wcl-wave, rgba(96, 165, 250, 0.4));
-  animation: wcl-wave 9s linear infinite;
-  transition: top 0.7s cubic-bezier(0.33, 1, 0.68, 1);
-}
-
-.why-choose-luminy__card-icon::after {
-  top: 66%;
-  border-radius: 46%;
-  opacity: 0.6;
-  animation-duration: 13s;
-  animation-direction: reverse;
-}
-
-@keyframes wcl-wave {
-  to {
-    transform: rotate(360deg);
-  }
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
 }
 
 .why-choose-luminy__card-icon svg {
@@ -4018,22 +4002,12 @@
     0 5px 18px var(--wcl-glow, rgba(59, 130, 246, 0.38));
 }
 
-.why-choose-luminy__card:hover .why-choose-luminy__card-icon::before {
-  top: 44%;
-}
-
-.why-choose-luminy__card:hover .why-choose-luminy__card-icon::after {
-  top: 52%;
-}
-
 .why-choose-luminy__card:hover .why-choose-luminy__card-icon svg {
   transform: scale(1.1);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .why-choose-luminy__card-icon,
-  .why-choose-luminy__card-icon::before,
-  .why-choose-luminy__card-icon::after {
+  .why-choose-luminy__card-icon {
     animation: none;
     transition: none;
   }
