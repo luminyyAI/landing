@@ -628,7 +628,7 @@
   }
 
   a.nav__mega-col--link:hover::before {
-    background: rgba(99, 102, 241, 0.05);
+    background: rgba(37, 99, 235, 0.05);
   }
 
   a.nav__mega-col--link:focus-visible {
@@ -660,9 +660,9 @@
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    color: #6d28d9;
-    background: rgba(124, 58, 237, 0.1);
-    border: 1px solid rgba(124, 58, 237, 0.16);
+    color: #1d4ed8;
+    background: rgba(37, 99, 235, 0.1);
+    border: 1px solid rgba(37, 99, 235, 0.16);
     padding: 0 10px;
     border-radius: 999px;
     line-height: 1;
@@ -675,15 +675,41 @@
     margin-bottom: 0;
   }
 
+  /* Rounded brand-blue icon tile above each column title. */
+  .nav__mega-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    margin-bottom: 1rem;
+    border-radius: 13px;
+    color: #fff;
+    background: linear-gradient(160deg, #3b82f6 0%, #2563eb 55%, #1d4ed8 100%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.3),
+      0 6px 16px rgba(37, 99, 235, 0.28);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .nav__mega-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  a.nav__mega-col--link:hover .nav__mega-icon {
+    transform: translateY(-2px) scale(1.05);
+  }
+
   .nav__mega-section-label {
-    margin: 0 0 0.875rem;
+    margin: 0 0 0.5rem;
     font-family: var(--font-sans);
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    line-height: 1;
-    color: #2563eb;
+    font-size: 1.125rem;
+    font-weight: 650;
+    letter-spacing: -0.015em;
+    text-transform: none;
+    line-height: 1.2;
+    color: var(--color-text);
   }
 
   .nav__mega-tagline {
@@ -1299,9 +1325,10 @@
     bottom: -5%;
     z-index: 2;
     width: clamp(90px, 15%, 150px);
-    padding: 5.5%;
+    /* Fixed bezel: % padding here would resolve against the host's width. */
+    padding: 6px;
     box-sizing: border-box;
-    border-radius: 15% / 7.2%;
+    border-radius: 24px;
     background: linear-gradient(180deg, #2a2c31 0%, #131417 55%, #26282d 100%);
     box-shadow:
       inset 0 0 0 2px rgba(255, 255, 255, 0.14),
@@ -1312,11 +1339,11 @@
   .hero__phone::after {
     content: '';
     position: absolute;
-    top: 9.5%;
+    top: 14px;
     left: 50%;
     transform: translateX(-50%);
-    width: 30%;
-    height: 3.4%;
+    width: 32%;
+    height: 10px;
     border-radius: 999px;
     background: #000;
   }
@@ -1325,7 +1352,7 @@
     display: block;
     width: 100%;
     height: auto;
-    border-radius: 11% / 5.3%;
+    border-radius: 19px;
   }
 }
 
