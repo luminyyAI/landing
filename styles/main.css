@@ -3407,6 +3407,8 @@
 
 .value-props__layout {
   display: flex;
+  /* statement on the left, phone on the right */
+  flex-direction: row-reverse;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-lg);
@@ -3462,7 +3464,7 @@
 
 .value-props__copy {
   max-width: 34rem;
-  text-align: right;
+  text-align: left;
 }
 
 .value-props__statement {
@@ -3749,9 +3751,9 @@
      to leave the visible logo at tittle size (~0.14em). */
   position: absolute;
   left: 50%;
-  top: -0.06em;
-  width: 0.34em;
-  height: 0.34em;
+  top: -0.09em;
+  width: 0.42em;
+  height: 0.42em;
   transform: translateX(-50%);
   object-fit: contain;
 }
@@ -3810,7 +3812,38 @@
   box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
 }
 
+/* Per-card icon palette (blue / violet / teal / amber). */
+.why-choose-luminy__card:nth-child(1) {
+  --wcl-icon: #2563eb;
+  --wcl-tile-bg: linear-gradient(180deg, #eef5ff 0%, #e7f0ff 100%);
+  --wcl-tile-border: rgba(37, 99, 235, 0.14);
+  --wcl-wave: rgba(37, 99, 235, 0.16);
+}
+
+.why-choose-luminy__card:nth-child(2) {
+  --wcl-icon: #7c3aed;
+  --wcl-tile-bg: linear-gradient(180deg, #f5f0ff 0%, #eee6ff 100%);
+  --wcl-tile-border: rgba(124, 58, 237, 0.14);
+  --wcl-wave: rgba(124, 58, 237, 0.15);
+}
+
+.why-choose-luminy__card:nth-child(3) {
+  --wcl-icon: #0d9488;
+  --wcl-tile-bg: linear-gradient(180deg, #ecfaf7 0%, #e0f5f0 100%);
+  --wcl-tile-border: rgba(13, 148, 136, 0.16);
+  --wcl-wave: rgba(13, 148, 136, 0.15);
+}
+
+.why-choose-luminy__card:nth-child(4) {
+  --wcl-icon: #d97706;
+  --wcl-tile-bg: linear-gradient(180deg, #fff6ea 0%, #ffefdb 100%);
+  --wcl-tile-border: rgba(217, 119, 6, 0.16);
+  --wcl-wave: rgba(217, 119, 6, 0.15);
+}
+
 .why-choose-luminy__card-icon {
+  position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3819,12 +3852,51 @@
   height: 52px;
   margin-bottom: 22px;
   border-radius: 16px;
-  background: linear-gradient(180deg, #eef5ff 0%, #e7f0ff 100%);
-  border: 1px solid rgba(37, 99, 235, 0.12);
-  color: var(--color-accent);
+  background: var(--wcl-tile-bg, linear-gradient(180deg, #eef5ff 0%, #e7f0ff 100%));
+  border: 1px solid var(--wcl-tile-border, rgba(37, 99, 235, 0.12));
+  color: var(--wcl-icon, var(--color-accent));
+}
+
+/* Animated waves: two oversized rounded squares spinning at different
+   speeds — their curved top edges read as a rolling waterline. */
+.why-choose-luminy__card-icon::before,
+.why-choose-luminy__card-icon::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 58%;
+  width: 200%;
+  aspect-ratio: 1;
+  margin-left: -100%;
+  border-radius: 42%;
+  background: var(--wcl-wave, rgba(37, 99, 235, 0.16));
+  animation: wcl-wave 9s linear infinite;
+}
+
+.why-choose-luminy__card-icon::after {
+  top: 66%;
+  border-radius: 46%;
+  opacity: 0.6;
+  animation-duration: 13s;
+  animation-direction: reverse;
+}
+
+@keyframes wcl-wave {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .why-choose-luminy__card-icon::before,
+  .why-choose-luminy__card-icon::after {
+    animation: none;
+  }
 }
 
 .why-choose-luminy__card-icon svg {
+  position: relative;
+  z-index: 1;
   width: 24px;
   height: 24px;
 }
