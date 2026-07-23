@@ -5968,35 +5968,33 @@
 }
 
 /* ==========================================================================
-   Features page — dark bento showcase
-   Namespaced .fb* so it is fully self-contained and cannot leak into the
-   light theme used by the rest of the site.
+   Features page — bento showcase
+   Namespaced .fb* so it is fully self-contained. Light by default (matching
+   the marketing site + the app's light theme); the dark block below mirrors
+   the app's dark theme one-for-one.
    ========================================================================== */
 
 .fb {
-  /* Palette mirrors the Luminy app (iOS DesignSystem.swift), which is
-     adaptive: light values by default, dark values under the dark-mode
-     override below. Keep in sync with Color.bgDeep / cardSurface /
-     accentIndigo / textMain / etc. */
+  /* Palette mirrors the Luminy app's LIGHT theme (iOS DesignSystem.swift).
+     Keep these in sync with Color.bgDeep / cardSurface / accentIndigo / etc. */
   --fb-bg: #f8fafc;          /* bgDeep */
-  --fb-bg-2: #f7fafe;        /* pageBottom */
+  --fb-bg-2: #e9f1ff;        /* pageTop */
   --fb-card: #ffffff;        /* cardSurface / bgElevated */
   --fb-card-2: #f1f5f9;      /* bgMid */
-  --fb-line: rgba(148, 163, 184, 0.24);        /* cardBorder */
-  --fb-line-strong: rgba(148, 163, 184, 0.36);
-  --fb-fill: rgba(15, 23, 42, 0.04);           /* chipFill */
-  --fb-row-line: rgba(15, 23, 42, 0.08);
+  --fb-line: rgba(148, 163, 180, 0.22);        /* cardBorder */
+  --fb-line-strong: rgba(15, 23, 42, 0.14);
+  --fb-fill: rgba(15, 23, 42, 0.06);           /* chipFill */
   --fb-text: #0f172a;        /* textMain */
   --fb-muted: #475569;       /* textMuted */
   --fb-dim: #64748b;         /* textDim */
   --fb-green: #059669;       /* accentGreen */
   --fb-red: #dc2626;         /* dangerRed */
   --fb-blue: #2563eb;        /* accentIndigo */
-  --fb-brand: #6097fc;       /* brandBlue (fixed in both modes) */
-  --fb-amber: #d97706;       /* category · dining */
-  --fb-purple: #7c3aed;      /* category · entertainment */
-  --fb-cyan: #0891b2;        /* category · transport */
-  /* Chip / status label colors: readable on their own tinted backgrounds. */
+  --fb-brand: #6097fc;       /* brandBlue */
+  --fb-amber: #f29820;       /* category · dining */
+  --fb-purple: #8b50e2;      /* category · entertainment */
+  --fb-cyan: #2ab5df;        /* category · transport */
+  --fb-row-line: rgba(15, 23, 42, 0.08);
   --fb-chip-ent: #6d28d9;
   --fb-chip-gro: #047857;
   --fb-chip-din: #b45309;
@@ -6004,52 +6002,16 @@
   --fb-chip-trn: #0e7490;
   --fb-ok: #047857;
   --fb-warn: #b45309;
-  --fb-card-shadow: 0 18px 44px rgba(15, 23, 42, 0.1);
+  --fb-card-shadow: 0 8px 30px rgba(15, 23, 42, 0.07);
 
   position: relative;
   margin-block: 0;
   padding-block: clamp(3rem, 7vw, 5.5rem);
   background:
-    radial-gradient(120% 80% at 15% 0%, rgba(37, 99, 235, 0.1) 0%, transparent 55%),
-    radial-gradient(100% 70% at 90% 10%, rgba(96, 151, 252, 0.1) 0%, transparent 50%),
-    linear-gradient(180deg, var(--fb-bg) 0%, var(--fb-bg-2) 100%);
+    radial-gradient(120% 80% at 15% 0%, rgba(96, 151, 252, 0.16) 0%, transparent 55%),
+    radial-gradient(100% 70% at 90% 10%, rgba(37, 99, 235, 0.09) 0%, transparent 50%),
+    linear-gradient(180deg, var(--fb-bg-2) 0%, #f7fafe 45%, var(--fb-bg) 100%);
   color: var(--fb-text);
-}
-
-/* Dark mode: the app's dark tokens, one-for-one. */
-@media (prefers-color-scheme: dark) {
-  .fb {
-    --fb-bg: #0b1220;        /* bgDeep / pageTop */
-    --fb-bg-2: #0e1626;      /* pageBottom */
-    --fb-card: #16213a;      /* cardSurface / bgElevated */
-    --fb-card-2: #111a2c;    /* bgMid */
-    --fb-line: rgba(255, 255, 255, 0.12);      /* cardBorder */
-    --fb-line-strong: rgba(255, 255, 255, 0.18);
-    --fb-fill: rgba(255, 255, 255, 0.08);      /* chipFill */
-    --fb-row-line: rgba(255, 255, 255, 0.07);
-    --fb-text: #e6ecf5;      /* textMain */
-    --fb-muted: #9aa8bd;     /* textMuted */
-    --fb-dim: #7a89a0;       /* textDim */
-    --fb-green: #34d399;     /* accentGreen */
-    --fb-red: #f87171;       /* dangerRed */
-    --fb-blue: #3b82f6;      /* accentIndigo */
-    --fb-amber: #f29820;
-    --fb-purple: #8b50e2;
-    --fb-cyan: #2ab5df;
-    --fb-chip-ent: #c9a4f5;
-    --fb-chip-gro: #6ee7b7;
-    --fb-chip-din: #f6b86a;
-    --fb-chip-cof: #f0c9a0;
-    --fb-chip-trn: #7fd4ec;
-    --fb-ok: #6ee7b7;
-    --fb-warn: #f6b86a;
-    --fb-card-shadow: 0 18px 48px rgba(11, 18, 32, 0.55);
-
-    background:
-      radial-gradient(120% 80% at 15% 0%, rgba(59, 130, 246, 0.22) 0%, transparent 55%),
-      radial-gradient(100% 70% at 90% 10%, rgba(96, 151, 252, 0.14) 0%, transparent 50%),
-      linear-gradient(180deg, var(--fb-bg) 0%, var(--fb-bg-2) 100%);
-  }
 }
 
 .fb__container {
@@ -6388,9 +6350,9 @@
   border-radius: 10px;
   font-size: 12px;
   font-weight: 700;
-  color: #06281a;
+  color: #ffffff;
   background: var(--fb-green);
-  box-shadow: 0 6px 18px rgba(52, 211, 153, 0.3);
+  box-shadow: 0 6px 18px rgba(5, 150, 105, 0.28);
   white-space: nowrap;
 }
 
@@ -6427,7 +6389,7 @@
   width: 100%;
   max-width: 26px;
   border-radius: 6px 6px 3px 3px;
-  background: linear-gradient(180deg, var(--fb-green), rgba(52, 211, 153, 0.3));
+  background: linear-gradient(180deg, var(--fb-green), rgba(5, 150, 105, 0.35));
 }
 
 .fb-bars__label {
@@ -6546,16 +6508,16 @@
   width: 172px;
   margin: 0 auto -2.5rem;
   padding: 8px 8px 0;
-  border: 1px solid var(--fb-line-strong);
+  border: 1px solid rgba(15, 23, 42, 0.18);
   border-radius: 26px 26px 6px 6px;
-  background: #0b1220;
-  box-shadow: 0 -4px 40px rgba(96, 151, 252, 0.2);
+  background: #1d1d1f;
+  box-shadow: 0 -4px 40px rgba(96, 151, 252, 0.22);
 }
 
 .fb-phone__screen {
   border-radius: 20px 20px 0 0;
   padding: 0.85rem 0.75rem 1.4rem;
-  background: linear-gradient(180deg, var(--fb-bg) 0%, var(--fb-bg-2) 100%);
+  background: linear-gradient(180deg, var(--fb-bg-2) 0%, #f7fafe 100%);
 }
 
 .fb-phone__notch {
@@ -6563,7 +6525,7 @@
   height: 5px;
   margin: 0 auto 0.7rem;
   border-radius: 999px;
-  background: var(--fb-line-strong);
+  background: rgba(255, 255, 255, 0.4);
 }
 
 .fb-phone__figure {
