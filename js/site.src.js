@@ -576,7 +576,6 @@ function initWhyChooseWaves() {
 
   const AURORA = ['#9cc6ff', '#e2eeff', '#6faeff', '#c7defe'];
   const BASE = ['#5a9dff', '#7cb5ff', '#a8ccff'];
-  const HIGHLIGHT = '#ffffff';
 
   const cp = (x, y, ax, ay, fx, fy, px, py) => ({ x, y, ax, ay, fx, fy, px, py });
   const LINES = [
@@ -615,10 +614,6 @@ function initWhyChooseWaves() {
   const hexToRgb = (hex) => {
     const n = parseInt(hex.slice(1), 16);
     return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
-  };
-  const rgba = (hex, a) => {
-    const c = hexToRgb(hex);
-    return `rgba(${c[0]},${c[1]},${c[2]},${a})`;
   };
   const mixHex = (hexA, hexB, t) => {
     const a = hexToRgb(hexA), b = hexToRgb(hexB);
@@ -663,19 +658,6 @@ function initWhyChooseWaves() {
       ctx.shadowBlur = 5;
       ctx.stroke(path);
       ctx.shadowBlur = 0;
-
-      const hlPos = 0.5 + 0.5 * Math.sin(ts * 0.17 + spec.seed * 1.3);
-      const hl = ctx.createLinearGradient(a0.x, a0.y, a1.x, a1.y);
-      const band = 0.16;
-      const lo = Math.max(0, hlPos - band), hi = Math.min(1, hlPos + band);
-      hl.addColorStop(0, 'rgba(255,255,255,0)');
-      if (lo > 0) hl.addColorStop(lo, 'rgba(255,255,255,0)');
-      hl.addColorStop(Math.min(Math.max(hlPos, 0.001), 0.999), rgba(HIGHLIGHT, 0.55 * spec.alpha));
-      if (hi < 1) hl.addColorStop(hi, 'rgba(255,255,255,0)');
-      hl.addColorStop(1, 'rgba(255,255,255,0)');
-      ctx.lineWidth = spec.width + 0.6;
-      ctx.strokeStyle = hl;
-      ctx.stroke(path);
     }
   }
 
