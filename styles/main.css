@@ -3826,18 +3826,19 @@
 
 /* The Luminy mark itself is the window: the box is masked to the logo
    silhouette, so the rolling waves show through the glyph like liquid glass.
-   The PNG mark fills ~48% of its canvas, hence the oversized mask-size. */
+   The mask is the mark cropped to its bounding box, inlined as a data URI
+   so the CSS bundler does not have to resolve an image path. */
 .value-props__list-mark {
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
   display: block;
-  margin-top: 0.2em;
-  width: 26px;
-  height: 26px;
+  margin-top: 0.16em;
+  width: 28px;
+  height: 28px;
   background: linear-gradient(160deg, #5c9dff 0%, #2563eb 55%, #1d4ed8 100%);
-  -webkit-mask: url('/images/luminy-removebg.png') center / 210% 210% no-repeat;
-  mask: url('/images/luminy-removebg.png') center / 210% 210% no-repeat;
+  -webkit-mask: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAQAAABtnpmgAAAEzUlEQVR42s1ZaWxVRRg975ZSbFlSKK2UHQQMuAUJUMoakEZcCCgYgUgaIgZlS6iNYGTfCQFaIEKqidS4sCNIg6AoNWqDfzASYtWgMUKVQgIUE1vacl5L++a+7c7Mnb53v5v03Zk37/bMzPnO931zLXjPHsY2ZFmegzUdP2AxCrwFrBXW4SN04F2Gl4Cl4TMsQ0JjwzvAHuUWPh1oegXYDHyLvmKH5QlmbUAx2ts7LQ8w6wTeCsURb2CPk1k54b6IL7BZKLUzywvAErEF+9Au0tfxApaOk8iDL/KA+AAbjDJMiD4kHsDm4Bx6OQ2KNbAk7EIRUhzH+WILLBNn8LrUyPpYAkvD1xgpOziWwHahn/zg2AEbgBdUhscO2MSmTMtrwAapDY8dsNZeBebzCrB0vOis77EHNgY/4QAu4BFvAXsDp5DBz/ZcNc9sZWsUYidjYlNsbA4y8QWWxjxrvj7lWwrYQGbw4808yiSw54JrQ/UNbAlg+TiMVHOzNAPsAbyPTSxczZmRfCwTXyHXdJxwD+xJEn64RCBS88/LboHNZFbaXW5zlJ672w2wBKxlydrWIJxG+w+v4VN9YKk4grcdnUddYP/EWOzV98reKKVumbezGIbz+nKRiW9UM1IpFm5FDv5xo2NbJQmvsqlVmI081LgR2O6YqrUe0ew3ZKPYrfKPUs3fHVesBFlMLAM2HKt0gPXRWqdIK1aHNXSjSqFnIV0gVwdYokHC38R0LEdtczsFH2AH2uhtZb0xypdzCw8J7b5MnF5R4Vgrl6IZ3o4T1iWhPQnf4wl58idiM/7mTLoYrSvrGM6m4IbghMtxDJ3lvbITPsebrBGzbZm8W7uFl/GOwKxUHMQq+75EB9Yf3+Gp+/cZrnU9wKxs7A+qFKaoZLATCau/68wqGJifWT8L/dNs/0UC2CI+opOSIjlbLVbbmJWA9fik4f2kJLAk7Mb2IH33uaT8RVRQs1YIzPK/n1waaWnCdXdmiJhnLGMIBP6erKMC9hiZNUmlShrIPR/XIodP1cL9jDA1aFRgz/MHD2lGPfmQtgUfRn6LFArMxx0/ZLJopV0L6UknUfKcGRsA1pb50HqpolXeDf6nZwcXe2VypxtWc/J3lqWY3BR80rDm4xdbTy5T8l4qRwRZ9JAhhrOLCubvRTYJKsB7Em+RBGA5OMPywmzB+iOGcnUC9iBOYYGKFlroyKI12XA+VkzB+cuWKp/HGNXTntn0EzVFij7vGuQz2asSel7Fl+imfgyVbZRZ/+IZqpTIrELW1cnqOmM5CZ2SXeCmnbYx6wvdPM6SJrUzcT9mYXdZaA+hZo3WnaMl7SnRJ3CXUWMmbgs9c+iVPfQX38xR53XG2I0C9CSWYEU6zNJZMV/EtbtIgS4R2l3IrIUup1ojv2L1Edh2GCPwq9AeQc0a7XoPKi1XSUwtVjJnvyX0zKNmdTVAjnI3HLuJl1h01TW3k7GHKXkbI6wt09nK8OV9N+Yncw3pYS1KLC0fBE4GlfcjqVlDjQl1EX7X8cp3GZAnC0WYn1mnJfITWSvFEr9cVCj/sBrnKKgBwSk0xiy/7cezuNN4mHGUKcqVhusqr8a//quCV9N9OQ5GeFA7ikNlyHU96nUjpF2JPxgpNmIYHarBy+8B5HscZREPWEgAAAAASUVORK5CYII=') center / contain no-repeat;
+  mask: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAQAAABtnpmgAAAEzUlEQVR42s1ZaWxVRRg975ZSbFlSKK2UHQQMuAUJUMoakEZcCCgYgUgaIgZlS6iNYGTfCQFaIEKqidS4sCNIg6AoNWqDfzASYtWgMUKVQgIUE1vacl5L++a+7c7Mnb53v5v03Zk37/bMzPnO931zLXjPHsY2ZFmegzUdP2AxCrwFrBXW4SN04F2Gl4Cl4TMsQ0JjwzvAHuUWPh1oegXYDHyLvmKH5QlmbUAx2ts7LQ8w6wTeCsURb2CPk1k54b6IL7BZKLUzywvAErEF+9Au0tfxApaOk8iDL/KA+AAbjDJMiD4kHsDm4Bx6OQ2KNbAk7EIRUhzH+WILLBNn8LrUyPpYAkvD1xgpOziWwHahn/zg2AEbgBdUhscO2MSmTMtrwAapDY8dsNZeBebzCrB0vOis77EHNgY/4QAu4BFvAXsDp5DBz/ZcNc9sZWsUYidjYlNsbA4y8QWWxjxrvj7lWwrYQGbw4808yiSw54JrQ/UNbAlg+TiMVHOzNAPsAbyPTSxczZmRfCwTXyHXdJxwD+xJEn64RCBS88/LboHNZFbaXW5zlJ672w2wBKxlydrWIJxG+w+v4VN9YKk4grcdnUddYP/EWOzV98reKKVumbezGIbz+nKRiW9UM1IpFm5FDv5xo2NbJQmvsqlVmI081LgR2O6YqrUe0ew3ZKPYrfKPUs3fHVesBFlMLAM2HKt0gPXRWqdIK1aHNXSjSqFnIV0gVwdYokHC38R0LEdtczsFH2AH2uhtZb0xypdzCw8J7b5MnF5R4Vgrl6IZ3o4T1iWhPQnf4wl58idiM/7mTLoYrSvrGM6m4IbghMtxDJ3lvbITPsebrBGzbZm8W7uFl/GOwKxUHMQq+75EB9Yf3+Gp+/cZrnU9wKxs7A+qFKaoZLATCau/68wqGJifWT8L/dNs/0UC2CI+opOSIjlbLVbbmJWA9fik4f2kJLAk7Mb2IH33uaT8RVRQs1YIzPK/n1waaWnCdXdmiJhnLGMIBP6erKMC9hiZNUmlShrIPR/XIodP1cL9jDA1aFRgz/MHD2lGPfmQtgUfRn6LFArMxx0/ZLJopV0L6UknUfKcGRsA1pb50HqpolXeDf6nZwcXe2VypxtWc/J3lqWY3BR80rDm4xdbTy5T8l4qRwRZ9JAhhrOLCubvRTYJKsB7Em+RBGA5OMPywmzB+iOGcnUC9iBOYYGKFlroyKI12XA+VkzB+cuWKp/HGNXTntn0EzVFij7vGuQz2asSel7Fl+imfgyVbZRZ/+IZqpTIrELW1cnqOmM5CZ2SXeCmnbYx6wvdPM6SJrUzcT9mYXdZaA+hZo3WnaMl7SnRJ3CXUWMmbgs9c+iVPfQX38xR53XG2I0C9CSWYEU6zNJZMV/EtbtIgS4R2l3IrIUup1ojv2L1Edh2GCPwq9AeQc0a7XoPKi1XSUwtVjJnvyX0zKNmdTVAjnI3HLuJl1h01TW3k7GHKXkbI6wt09nK8OV9N+Yncw3pYS1KLC0fBE4GlfcjqVlDjQl1EX7X8cp3GZAnC0WYn1mnJfITWSvFEr9cVCj/sBrnKKgBwSk0xiy/7cezuNN4mHGUKcqVhusqr8a//quCV9N9OQ5GeFA7ikNlyHU96nUjpF2JPxgpNmIYHarBy+8B5HscZREPWEgAAAAASUVORK5CYII=') center / contain no-repeat;
 }
 
 /* Two oversized rounded squares spinning at different speeds: their curved
@@ -3847,19 +3848,19 @@
   content: '';
   position: absolute;
   left: 50%;
-  top: 52%;
-  width: 240%;
+  top: 70%;
+  width: 260%;
   aspect-ratio: 1;
-  margin-left: -120%;
+  margin-left: -130%;
   border-radius: 42%;
-  background: rgba(191, 219, 254, 0.75);
+  background: rgba(147, 197, 253, 0.65);
   animation: value-props-wave 7s linear infinite;
 }
 
 .value-props__list-mark::after {
-  top: 62%;
+  top: 80%;
   border-radius: 46%;
-  background: rgba(255, 255, 255, 0.6);
+  background: rgba(224, 240, 255, 0.7);
   animation-duration: 11s;
   animation-direction: reverse;
 }
