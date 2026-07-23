@@ -417,33 +417,39 @@ function initIncludesCarousel() {
 /* ------------------------------------------------------ pricing toggle */
 
 function initPricingToggle() {
-  const pro = document.querySelector('.pricing-card--pro');
-  if (!pro) return;
-  const opts = pro.querySelectorAll('.pricing-card__billing-opt');
-  if (opts.length !== 2) return;
+  const card = document.querySelector('.pricing-plan');
+  if (!card) return;
 
-  const price = pro.querySelector('.pricing-card__price');
-  const period = pro.querySelector('.pricing-card__period');
-  const equiv = pro.querySelector('.pricing-card__price-equiv');
-  const note = pro.querySelector('.pricing-card__bill-note');
+  const price = card.querySelector('[data-plan-price]');
+  const bill = card.querySelector('[data-plan-bill]');
+  const sw = card.querySelector('[data-plan-switch]');
+  const opts = card.querySelectorAll('[data-plan-opt]');
 
   const apply = (yearly) => {
-    opts[0].classList.toggle('pricing-card__billing-opt--active', !yearly);
-    opts[0].setAttribute('aria-pressed', String(!yearly));
-    opts[1].classList.toggle('pricing-card__billing-opt--active', yearly);
-    opts[1].setAttribute('aria-pressed', String(yearly));
-    if (price) price.textContent = yearly ? '$140' : '$14.99';
-    if (period) period.textContent = yearly ? '/year' : '/month';
-    if (equiv) equiv.classList.toggle('pricing-card__price-equiv--hidden', !yearly);
-    if (note) {
-      note.textContent = yearly
-        ? 'Billed annually. Cancel anytime. Taxes may apply.'
-        : 'Cancel anytime. Taxes may apply.';
+    card.classList.toggle('pricing-plan--monthly', !yearly);
+    if (price) price.textContent = yearly ? '$11.67' : '$14.99';
+    if (bill) {
+      bill.textContent = yearly
+        ? '$140 billed yearly'
+        : 'Billed monthly. Cancel anytime.';
     }
+    if (sw) sw.setAttribute('aria-checked', String(!yearly));
+    opts.forEach((opt) => {
+      opt.classList.toggle(
+        'pricing-plan__opt--on',
+        (opt.getAttribute('data-plan-opt') === 'yearly') === yearly,
+      );
+    });
   };
 
-  opts[0].addEventListener('click', () => apply(false));
-  opts[1].addEventListener('click', () => apply(true));
+  if (sw) {
+    sw.addEventListener('click', () =>
+      apply(card.classList.contains('pricing-plan--monthly')));
+  }
+  opts.forEach((opt) => {
+    opt.addEventListener('click', () =>
+      apply(opt.getAttribute('data-plan-opt') === 'yearly'));
+  });
 }
 
 /* ------------------------------------------------------------ auth links */
@@ -454,6 +460,9 @@ function initAuthLinks() {
   const signup = document.getElementById('signup');
   if (login) login.href = LOGIN_URL;
   if (signup) signup.href = SIGNUP_URL;
+  document.querySelectorAll('a[data-signup-link]').forEach((a) => {
+    a.href = SIGNUP_URL;
+  });
 }
 
 /* ---------------------------------------------------- mobile hamburger */
@@ -705,10 +714,31 @@ function initWhyChooseWaves() {
   });
 }
 
+/* --------------------------------------------------- changelog tabs */
+function initChangelogTabs() {
+  const tabs = document.querySelectorAll('[data-changelog-tab]');
+  const panels = document.querySelectorAll('[data-changelog-panel]');
+  if (!tabs.length || !panels.length) return;
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const key = tab.getAttribute('data-changelog-tab');
+      tabs.forEach((t) => {
+        const active = t === tab;
+        t.classList.toggle('is-active', active);
+        t.setAttribute('aria-selected', active ? 'true' : 'false');
+      });
+      panels.forEach((panel) => {
+        panel.hidden = panel.getAttribute('data-changelog-panel') !== key;
+      });
+    });
+  });
+}
+
 /* ----------------------------------------------------------------- boot */
 
 function boot() {
   initWhyChooseWaves();
+  initChangelogTabs();
   initAuthLinks();
   initMobileMenu();
   initScrollAmbient();
