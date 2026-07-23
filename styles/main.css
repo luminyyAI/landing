@@ -515,8 +515,8 @@
     border-radius: 28px;
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.86) 0%,
-      rgba(255, 255, 255, 0.76) 100%
+      rgba(255, 255, 255, 0.99) 0%,
+      rgba(252, 253, 255, 0.98) 100%
     );
     -webkit-backdrop-filter: blur(20px) saturate(150%);
     backdrop-filter: blur(20px) saturate(150%);
@@ -535,7 +535,7 @@
     width: 18px;
     height: 18px;
     transform: translateX(-50%) rotate(45deg);
-    background: rgba(255, 255, 255, 0.86);
+    background: rgba(255, 255, 255, 0.99);
     -webkit-backdrop-filter: blur(20px) saturate(150%);
     backdrop-filter: blur(20px) saturate(150%);
     border-left: 1px solid rgba(255, 255, 255, 0.58);
@@ -559,8 +559,8 @@
   .nav.nav--scrolled .nav__mega-inner {
     background: linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.88) 0%,
-      rgba(255, 255, 255, 0.78) 100%
+      rgba(255, 255, 255, 0.99) 0%,
+      rgba(252, 253, 255, 0.98) 100%
     );
     border-color: rgba(255, 255, 255, 0.55);
   }
@@ -578,22 +578,6 @@
 
   .nav__mega-col:last-child {
     padding-right: 0;
-  }
-
-  /* Subtle vertical dividers between columns — faint, shorter than the panel. */
-  .nav__mega-col:not(:last-child)::after {
-    content: '';
-    position: absolute;
-    top: 4px;
-    right: 0;
-    height: 86%;
-    width: 1px;
-    background: linear-gradient(
-      180deg,
-      transparent,
-      rgba(15, 23, 42, 0.08),
-      transparent
-    );
   }
 
   a.nav__mega-col--link {
@@ -627,9 +611,6 @@
     right: -16px;
   }
 
-  a.nav__mega-col--link:hover::before {
-    background: rgba(37, 99, 235, 0.05);
-  }
 
   a.nav__mega-col--link:focus-visible {
     outline: none;
@@ -697,9 +678,6 @@
     height: 22px;
   }
 
-  a.nav__mega-col--link:hover .nav__mega-icon {
-    transform: translateY(-2px) scale(1.05);
-  }
 
   .nav__mega-section-label {
     margin: 0 0 0.5rem;
@@ -3926,8 +3904,8 @@
   --wcl-glow: rgba(77, 153, 255, 0.42);
 }
 
-/* Liquid-glass tile: black→blue glass gradient, specular top light,
-   inner blue bloom, and a periodic sheen sweeping across the surface. */
+/* Liquid-glass tile: black→blue glass gradient, static specular top light,
+   inner blue bloom. (The animated white sheen sweep was removed.) */
 .why-choose-luminy__card-icon {
   position: relative;
   overflow: hidden;
@@ -3941,13 +3919,6 @@
   border-radius: 17px;
   color: #eaf2ff;
   background:
-    linear-gradient(
-      115deg,
-      transparent 32%,
-      rgba(255, 255, 255, 0.38) 45%,
-      rgba(255, 255, 255, 0.1) 52%,
-      transparent 60%
-    ),
     radial-gradient(
       120% 90% at 22% 0%,
       rgba(255, 255, 255, 0.3) 0%,
@@ -3959,40 +3930,15 @@
       var(--wcl-deep, #0b1226) 56%,
       var(--wcl-black, #05070d) 100%
     );
-  background-size:
-    240% 100%,
-    100% 100%,
-    100% 100%;
-  background-position:
-    -140% 0,
-    0 0,
-    0 0;
   border: 1px solid rgba(148, 197, 255, 0.32);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.35),
     inset 0 -10px 18px var(--wcl-glow, rgba(59, 130, 246, 0.38)),
     0 10px 24px rgba(5, 10, 24, 0.32),
     0 3px 10px var(--wcl-glow, rgba(59, 130, 246, 0.38));
-  animation: wcl-sheen 6s ease-in-out infinite;
   transition:
     transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1),
     box-shadow 0.45s cubic-bezier(0.33, 1, 0.68, 1);
-}
-
-@keyframes wcl-sheen {
-  0%,
-  58% {
-    background-position:
-      -140% 0,
-      0 0,
-      0 0;
-  }
-  100% {
-    background-position:
-      240% 0,
-      0 0,
-      0 0;
-  }
 }
 
 /* Aurora waves (ported from the app's onboarding promo-waves): a canvas the

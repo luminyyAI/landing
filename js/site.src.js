@@ -574,7 +574,7 @@ function initWhyChooseWaves() {
   const tiles = document.querySelectorAll('.why-choose-luminy__card-icon');
   if (!tiles.length) return;
 
-  const AURORA = ['#9cc6ff', '#e2eeff', '#6faeff', '#c7defe'];
+  const AURORA = ['#9cc6ff', '#bcd9ff', '#6faeff', '#c7defe'];
   const BASE = ['#5a9dff', '#7cb5ff', '#a8ccff'];
 
   const cp = (x, y, ax, ay, fx, fy, px, py) => ({ x, y, ax, ay, fx, fy, px, py });
