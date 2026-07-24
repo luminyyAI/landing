@@ -702,10 +702,10 @@ function initWhyChooseWaves() {
       return;
     }
     const start = performance.now();
-    let last = 0;
     const frame = (now) => {
-      if (now - last >= 33 && tile.offsetParent !== null) {
-        last = now;
+      // Draw every animation frame (native rAF cadence) so the motion reads
+      // smooth instead of stepping at a throttled 30fps.
+      if (tile.offsetParent !== null) {
         drawFrame(ctx, w, h, (now - start) / 1000 + phase);
       }
       requestAnimationFrame(frame);
