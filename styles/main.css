@@ -1296,34 +1296,53 @@
 }
 
 /* iPhone app shot overlapping the dashboard's bottom-left corner,
-   dressed in a CSS device frame (dark bezel + Dynamic Island). */
+   dressed in a CSS device frame (dark bezel + Dynamic Island). Bezel styling
+   is shared across breakpoints; only display/position/size change per width. */
 .hero__phone {
   display: none;
+  position: absolute;
+  z-index: 2;
+  /* Fixed bezel: % padding here would resolve against the host's width. */
+  padding: 4px;
+  box-sizing: border-box;
+  border-radius: 26px;
+  background: linear-gradient(180deg, #2a2c31 0%, #131417 55%, #26282d 100%);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 16px 40px rgba(15, 23, 42, 0.24);
+}
+
+.hero__phone-shot {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 22px;
+}
+
+/* Mobile: keep the phone in the hero, overlapping the dashboard's bottom-left
+   corner. Positive offsets keep it inside the mock host so it never pushes the
+   page wider or gets clipped by the host's overflow. */
+@media (max-width: 899.98px) {
+  .hero__phone {
+    display: block;
+    left: 5%;
+    bottom: 4%;
+    width: clamp(84px, 26%, 148px);
+    padding: 3px;
+    border-radius: 22px;
+  }
+
+  .hero__phone-shot {
+    border-radius: 19px;
+  }
 }
 
 @media (min-width: 900px) {
   .hero__phone {
     display: block;
-    position: absolute;
     left: -12%;
     bottom: -6%;
-    z-index: 2;
     width: clamp(128px, 21%, 220px);
-    /* Fixed bezel: % padding here would resolve against the host's width. */
-    padding: 4px;
-    box-sizing: border-box;
-    border-radius: 26px;
-    background: linear-gradient(180deg, #2a2c31 0%, #131417 55%, #26282d 100%);
-    box-shadow:
-      inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-      0 16px 40px rgba(15, 23, 42, 0.24);
-  }
-
-  .hero__phone-shot {
-    display: block;
-    width: 100%;
-    height: auto;
-    border-radius: 22px;
   }
 }
 
@@ -1348,7 +1367,8 @@
   height: auto;
   max-width: 100%;
   border-radius: 14px;
-  border: 1px solid var(--color-border);
+  /* Thin near-black frame so the screenshot reads as a desktop screen. */
+  border: 1.5px solid #0b0d12;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
 }
 
@@ -3838,8 +3858,10 @@
   color: rgba(15, 23, 42, 0.82);
 }
 
-/* The Luminy mark itself is the window: the box is masked to the logo
-   silhouette, so the rolling waves show through the glyph like liquid glass.
+/* The Luminy mark is a pane of clear liquid glass cut to the logo
+   silhouette. It carries no color of its own: a band of colored waves
+   rolls behind the glass (::before, the ONLY color in the glyph) and a
+   soft sheen rides on top (::after) so it reads as glass, not flat fill.
    The mask is the mark cropped to its bounding box, inlined as a data URI
    so the CSS bundler does not have to resolve an image path. */
 .value-props__list-mark {
@@ -3850,69 +3872,72 @@
   margin-top: 0.16em;
   width: 28px;
   height: 28px;
-  background: linear-gradient(160deg, #5c9dff 0%, #2563eb 55%, #1d4ed8 100%);
+  /* Clear glass base: a whisper of frost so the glyph stays legible in the
+     wave troughs without adding any color of its own. */
+  background: linear-gradient(155deg, rgba(255, 255, 255, 0.32) 0%, rgba(219, 234, 254, 0.1) 100%);
   -webkit-mask: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAQAAABtnpmgAAAEzUlEQVR42s1ZaWxVRRg975ZSbFlSKK2UHQQMuAUJUMoakEZcCCgYgUgaIgZlS6iNYGTfCQFaIEKqidS4sCNIg6AoNWqDfzASYtWgMUKVQgIUE1vacl5L++a+7c7Mnb53v5v03Zk37/bMzPnO931zLXjPHsY2ZFmegzUdP2AxCrwFrBXW4SN04F2Gl4Cl4TMsQ0JjwzvAHuUWPh1oegXYDHyLvmKH5QlmbUAx2ts7LQ8w6wTeCsURb2CPk1k54b6IL7BZKLUzywvAErEF+9Au0tfxApaOk8iDL/KA+AAbjDJMiD4kHsDm4Bx6OQ2KNbAk7EIRUhzH+WILLBNn8LrUyPpYAkvD1xgpOziWwHahn/zg2AEbgBdUhscO2MSmTMtrwAapDY8dsNZeBebzCrB0vOis77EHNgY/4QAu4BFvAXsDp5DBz/ZcNc9sZWsUYidjYlNsbA4y8QWWxjxrvj7lWwrYQGbw4808yiSw54JrQ/UNbAlg+TiMVHOzNAPsAbyPTSxczZmRfCwTXyHXdJxwD+xJEn64RCBS88/LboHNZFbaXW5zlJ672w2wBKxlydrWIJxG+w+v4VN9YKk4grcdnUddYP/EWOzV98reKKVumbezGIbz+nKRiW9UM1IpFm5FDv5xo2NbJQmvsqlVmI081LgR2O6YqrUe0ew3ZKPYrfKPUs3fHVesBFlMLAM2HKt0gPXRWqdIK1aHNXSjSqFnIV0gVwdYokHC38R0LEdtczsFH2AH2uhtZb0xypdzCw8J7b5MnF5R4Vgrl6IZ3o4T1iWhPQnf4wl58idiM/7mTLoYrSvrGM6m4IbghMtxDJ3lvbITPsebrBGzbZm8W7uFl/GOwKxUHMQq+75EB9Yf3+Gp+/cZrnU9wKxs7A+qFKaoZLATCau/68wqGJifWT8L/dNs/0UC2CI+opOSIjlbLVbbmJWA9fik4f2kJLAk7Mb2IH33uaT8RVRQs1YIzPK/n1waaWnCdXdmiJhnLGMIBP6erKMC9hiZNUmlShrIPR/XIodP1cL9jDA1aFRgz/MHD2lGPfmQtgUfRn6LFArMxx0/ZLJopV0L6UknUfKcGRsA1pb50HqpolXeDf6nZwcXe2VypxtWc/J3lqWY3BR80rDm4xdbTy5T8l4qRwRZ9JAhhrOLCubvRTYJKsB7Em+RBGA5OMPywmzB+iOGcnUC9iBOYYGKFlroyKI12XA+VkzB+cuWKp/HGNXTntn0EzVFij7vGuQz2asSel7Fl+imfgyVbZRZ/+IZqpTIrELW1cnqOmM5CZ2SXeCmnbYx6wvdPM6SJrUzcT9mYXdZaA+hZo3WnaMl7SnRJ3CXUWMmbgs9c+iVPfQX38xR53XG2I0C9CSWYEU6zNJZMV/EtbtIgS4R2l3IrIUup1ojv2L1Edh2GCPwq9AeQc0a7XoPKi1XSUwtVjJnvyX0zKNmdTVAjnI3HLuJl1h01TW3k7GHKXkbI6wt09nK8OV9N+Yncw3pYS1KLC0fBE4GlfcjqVlDjQl1EX7X8cp3GZAnC0WYn1mnJfITWSvFEr9cVCj/sBrnKKgBwSk0xiy/7cezuNN4mHGUKcqVhusqr8a//quCV9N9OQ5GeFA7ikNlyHU96nUjpF2JPxgpNmIYHarBy+8B5HscZREPWEgAAAAASUVORK5CYII=') center / contain no-repeat;
   mask: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEwAAABMCAQAAABtnpmgAAAEzUlEQVR42s1ZaWxVRRg975ZSbFlSKK2UHQQMuAUJUMoakEZcCCgYgUgaIgZlS6iNYGTfCQFaIEKqidS4sCNIg6AoNWqDfzASYtWgMUKVQgIUE1vacl5L++a+7c7Mnb53v5v03Zk37/bMzPnO931zLXjPHsY2ZFmegzUdP2AxCrwFrBXW4SN04F2Gl4Cl4TMsQ0JjwzvAHuUWPh1oegXYDHyLvmKH5QlmbUAx2ts7LQ8w6wTeCsURb2CPk1k54b6IL7BZKLUzywvAErEF+9Au0tfxApaOk8iDL/KA+AAbjDJMiD4kHsDm4Bx6OQ2KNbAk7EIRUhzH+WILLBNn8LrUyPpYAkvD1xgpOziWwHahn/zg2AEbgBdUhscO2MSmTMtrwAapDY8dsNZeBebzCrB0vOis77EHNgY/4QAu4BFvAXsDp5DBz/ZcNc9sZWsUYidjYlNsbA4y8QWWxjxrvj7lWwrYQGbw4808yiSw54JrQ/UNbAlg+TiMVHOzNAPsAbyPTSxczZmRfCwTXyHXdJxwD+xJEn64RCBS88/LboHNZFbaXW5zlJ672w2wBKxlydrWIJxG+w+v4VN9YKk4grcdnUddYP/EWOzV98reKKVumbezGIbz+nKRiW9UM1IpFm5FDv5xo2NbJQmvsqlVmI081LgR2O6YqrUe0ew3ZKPYrfKPUs3fHVesBFlMLAM2HKt0gPXRWqdIK1aHNXSjSqFnIV0gVwdYokHC38R0LEdtczsFH2AH2uhtZb0xypdzCw8J7b5MnF5R4Vgrl6IZ3o4T1iWhPQnf4wl58idiM/7mTLoYrSvrGM6m4IbghMtxDJ3lvbITPsebrBGzbZm8W7uFl/GOwKxUHMQq+75EB9Yf3+Gp+/cZrnU9wKxs7A+qFKaoZLATCau/68wqGJifWT8L/dNs/0UC2CI+opOSIjlbLVbbmJWA9fik4f2kJLAk7Mb2IH33uaT8RVRQs1YIzPK/n1waaWnCdXdmiJhnLGMIBP6erKMC9hiZNUmlShrIPR/XIodP1cL9jDA1aFRgz/MHD2lGPfmQtgUfRn6LFArMxx0/ZLJopV0L6UknUfKcGRsA1pb50HqpolXeDf6nZwcXe2VypxtWc/J3lqWY3BR80rDm4xdbTy5T8l4qRwRZ9JAhhrOLCubvRTYJKsB7Em+RBGA5OMPywmzB+iOGcnUC9iBOYYGKFlroyKI12XA+VkzB+cuWKp/HGNXTntn0EzVFij7vGuQz2asSel7Fl+imfgyVbZRZ/+IZqpTIrELW1cnqOmM5CZ2SXeCmnbYx6wvdPM6SJrUzcT9mYXdZaA+hZo3WnaMl7SnRJ3CXUWMmbgs9c+iVPfQX38xR53XG2I0C9CSWYEU6zNJZMV/EtbtIgS4R2l3IrIUup1ojv2L1Edh2GCPwq9AeQc0a7XoPKi1XSUwtVjJnvyX0zKNmdTVAjnI3HLuJl1h01TW3k7GHKXkbI6wt09nK8OV9N+Yncw3pYS1KLC0fBE4GlfcjqVlDjQl1EX7X8cp3GZAnC0WYn1mnJfITWSvFEr9cVCj/sBrnKKgBwSk0xiy/7cezuNN4mHGUKcqVhusqr8a//quCV9N9OQ5GeFA7ikNlyHU96nUjpF2JPxgpNmIYHarBy+8B5HscZREPWEgAAAAASUVORK5CYII=') center / contain no-repeat;
 }
 
-/* Two oversized rounded squares spinning at different speeds: their curved
-   edges read as a waterline rolling behind the glyph. */
-.value-props__list-mark::before,
+/* The waves — the ONLY color in the glyph. A band of blurred blue crests
+   drifts behind the glass; the blur diffuses them like light through a
+   frosted pane. Oversized + inset so no hard edge ever enters the frame. */
+.value-props__list-mark::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  background:
+    radial-gradient(58% 46% at 28% 62%, #5c9dff 0%, rgba(92, 157, 255, 0) 70%),
+    radial-gradient(52% 42% at 72% 74%, #2563eb 0%, rgba(37, 99, 235, 0) 72%),
+    linear-gradient(180deg, rgba(37, 99, 235, 0) 34%, #1d4ed8 118%);
+  filter: blur(1.3px);
+  animation: value-props-wave 9s ease-in-out infinite alternate;
+}
+
+/* The glass surface: a soft diagonal sheen riding on top of the waves so
+   the glyph reads as a lit pane of glass rather than a flat colored fill.
+   screen blend keeps it a highlight, never a wash that hides the color. */
 .value-props__list-mark::after {
   content: '';
   position: absolute;
-  left: 50%;
-  top: 70%;
-  width: 260%;
-  aspect-ratio: 1;
-  margin-left: -130%;
-  border-radius: 42%;
-  background: rgba(147, 197, 253, 0.65);
-  animation: value-props-wave 7s linear infinite;
-}
-
-.value-props__list-mark::after {
-  top: 80%;
-  border-radius: 46%;
-  background: rgba(224, 240, 255, 0.7);
-  animation-duration: 11s;
-  animation-direction: reverse;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0.28) 24%,
+    rgba(255, 255, 255, 0) 52%
+  );
+  mix-blend-mode: screen;
+  pointer-events: none;
 }
 
 @keyframes value-props-wave {
-  to {
-    transform: rotate(360deg);
+  0% {
+    transform: translate3d(-9%, 3%, 0) scale(1.06);
+  }
+  50% {
+    transform: translate3d(5%, -4%, 0) scale(1.13);
+  }
+  100% {
+    transform: translate3d(10%, 2%, 0) scale(1.07);
   }
 }
 
-/* Stagger so the marks never roll in lockstep. */
+/* Stagger so the four marks never drift in lockstep. */
 .value-props__list-item:nth-child(2) .value-props__list-mark::before {
-  animation-delay: -1.4s;
-}
-
-.value-props__list-item:nth-child(2) .value-props__list-mark::after {
-  animation-delay: -2.2s;
+  animation-delay: -2.3s;
 }
 
 .value-props__list-item:nth-child(3) .value-props__list-mark::before {
-  animation-delay: -2.8s;
-}
-
-.value-props__list-item:nth-child(3) .value-props__list-mark::after {
-  animation-delay: -4.4s;
+  animation-delay: -4.6s;
 }
 
 .value-props__list-item:nth-child(4) .value-props__list-mark::before {
-  animation-delay: -4.2s;
-}
-
-.value-props__list-item:nth-child(4) .value-props__list-mark::after {
-  animation-delay: -6.6s;
+  animation-delay: -6.9s;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .value-props__list-mark::before,
-  .value-props__list-mark::after {
+  .value-props__list-mark::before {
     animation: none;
   }
 }
