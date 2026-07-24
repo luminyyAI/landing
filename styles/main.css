@@ -1151,7 +1151,7 @@
 
 @media (min-width: 900px) {
   .hero__grid {
-    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
     gap: clamp(1.75rem, 2.5vw, 2.75rem);
   }
 }
@@ -1308,7 +1308,7 @@
     left: -12%;
     bottom: -6%;
     z-index: 2;
-    width: clamp(110px, 18%, 190px);
+    width: clamp(128px, 21%, 220px);
     /* Fixed bezel: % padding here would resolve against the host's width. */
     padding: 4px;
     box-sizing: border-box;
@@ -2580,6 +2580,13 @@
   letter-spacing: -0.022em;
   margin-bottom: 0.55rem;
   line-height: 1.25;
+}
+
+@media (min-width: 900px) {
+  .includes-card__title {
+    font-size: clamp(1rem, 1.35vw, 1.12rem);
+    white-space: nowrap;
+  }
 }
 
 .includes-card__body {
@@ -4201,16 +4208,21 @@
   display: inline-block;
 }
 
-.why-choose-luminy__logo-i img {
-  /* The PNG mark only fills ~55% of its canvas, so the box is oversized
-     to leave the visible logo at tittle size (~0.14em). */
+/* The tittle is drawn as a pseudo-element rather than an inline <img>: a
+   replaced element inside the word creates a selection boundary, so
+   double-clicking "Lumıny" would stop at the "ı". A ::after keeps the text
+   one contiguous run, so double-click selects the whole word.
+   The PNG mark only fills ~55% of its canvas, so the box is oversized
+   to leave the visible logo at tittle size (~0.14em). */
+.why-choose-luminy__logo-i::after {
+  content: "";
   position: absolute;
   left: 50%;
   top: -0.21em;
   width: 0.74em;
   height: 0.74em;
   transform: translateX(-50%);
-  object-fit: contain;
+  background: url("../images/luminy-removebg.png") center / contain no-repeat;
 }
 
 .why-choose-luminy .container {
